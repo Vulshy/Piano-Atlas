@@ -1,0 +1,4176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="application-name" content="Piano Atlas">
+  <meta name="description" content="Piano Atlas is a clean piano reference for scales, chords, arpeggios, fingerings, chord progressions, and the circle of fifths.">
+  <meta name="theme-color" content="#f4f2ea">
+  <meta name="msapplication-TileColor" content="#111111">
+  <meta name="apple-mobile-web-app-title" content="Piano Atlas">
+  <meta name="application-url" content="PianoAtlas.html">
+  <link rel="icon" type="image/svg+xml" href='data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128"%3E%3Crect width="128" height="128" rx="18" fill="%23111111"/%3E%3Crect x="18" y="20" width="92" height="88" rx="8" fill="%23ffffff"/%3E%3Crect x="34" y="20" width="14" height="56" rx="4" fill="%23000000"/%3E%3Crect x="58" y="20" width="14" height="56" rx="4" fill="%23000000"/%3E%3Crect x="82" y="20" width="14" height="56" rx="4" fill="%23000000"/%3E%3Cpath d="M20 100h88" stroke="%238b1e24" stroke-width="8" stroke-linecap="round"/%3E%3C/svg%3E'>
+  <link rel="shortcut icon" type="image/svg+xml" href='data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128"%3E%3Crect width="128" height="128" rx="18" fill="%23111111"/%3E%3Crect x="18" y="20" width="92" height="88" rx="8" fill="%23ffffff"/%3E%3Crect x="34" y="20" width="14" height="56" rx="4" fill="%23000000"/%3E%3Crect x="58" y="20" width="14" height="56" rx="4" fill="%23000000"/%3E%3Crect x="82" y="20" width="14" height="56" rx="4" fill="%23000000"/%3E%3Cpath d="M20 100h88" stroke="%238b1e24" stroke-width="8" stroke-linecap="round"/%3E%3C/svg%3E'>
+  <title>Piano Atlas</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Capriola&family=Oregano&display=swap");
+
+    :root {
+      --ink: #151515;
+      --muted: #666666;
+      --line: #d8d8d2;
+      --paper: #f4f2ea;
+      --panel: #ffffff;
+      --page-wash:
+        linear-gradient(135deg, rgba(17, 17, 17, 0.052), rgba(104, 104, 96, 0.042)),
+        radial-gradient(circle at 72% 0%, rgba(255, 255, 255, 0.88), transparent 34%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0));
+      --sidebar-bg: rgba(250, 249, 243, 0.82);
+      --control-bg: rgba(239, 237, 226, 0.82);
+      --surface-bg: rgba(255, 255, 255, 0.78);
+      --soft-surface: #f8f6ef;
+      --card-bg: rgba(251, 250, 245, 0.88);
+      --accent: #8b1e24;
+      --accent-2: #8b1e24;
+      --accent-soft: #f3dadd;
+      --accent-hover: #a0272f;
+      --black: #000000;
+      --white-key: #ffffff;
+      --note-pill-bg: #151515;
+      --note-pill-text: #ffffff;
+      --primary-action-bg: #111111;
+      --primary-action-text: #ffffff;
+      --keyboard-frame: #111111;
+      --white-key-label: #000000;
+      --selected-key: #8b1e24;
+      --selected-black-key: #7a171e;
+      --shadow: 0 22px 60px rgba(17, 17, 17, 0.14);
+      --panel-shadow: 0 18px 46px rgba(17, 17, 17, 0.10);
+      --focus-ring: 0 0 0 4px rgba(139, 30, 36, 0.18);
+      --interactive-outline: #111111;
+      font-family: "Capriola", "Segoe UI Variable Text", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+    }
+
+    body.dark-mode {
+      --ink: #f5f1e9;
+      --muted: #c0c0c0;
+      --line: #505050;
+      --paper: #242424;
+      --panel: #303030;
+      --page-wash:
+        linear-gradient(135deg, rgba(8, 8, 8, 0.34), rgba(255, 255, 255, 0.02)),
+        radial-gradient(circle at 76% 0%, rgba(255, 255, 255, 0.035), transparent 32%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0));
+      --sidebar-bg: rgba(31, 31, 31, 0.94);
+      --control-bg: rgba(46, 46, 46, 0.86);
+      --surface-bg: rgba(47, 47, 47, 0.92);
+      --soft-surface: #383838;
+      --card-bg: rgba(55, 55, 55, 0.86);
+      --note-pill-bg: #151515;
+      --primary-action-bg: #111111;
+      --keyboard-frame: #111111;
+      --selected-black-key: #75151c;
+      --accent-soft: #51272b;
+      --accent-hover: #b6313a;
+      --shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
+      --panel-shadow: 0 20px 52px rgba(0, 0, 0, 0.24);
+      --focus-ring: 0 0 0 4px rgba(181, 49, 58, 0.22);
+      --interactive-outline: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        var(--page-wash),
+        var(--paper);
+      text-rendering: geometricPrecision;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body.modal-open {
+      overflow: hidden;
+    }
+
+    .splash {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.055), transparent 28%),
+        linear-gradient(180deg, #050505, #000000);
+      transition: opacity 2000ms ease, visibility 0s linear 2000ms;
+    }
+
+    body.ready .splash {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .splash-card {
+      display: grid;
+      justify-items: center;
+      align-content: center;
+      min-height: 380px;
+      color: #ffffff;
+      text-align: center;
+    }
+
+    .intro-clef,
+    .intro-title,
+    .intro-credit {
+      opacity: 0;
+      transform: translateY(10px);
+      animation: introFadeIn 1100ms ease forwards;
+    }
+
+    .intro-clef {
+      font-family: "Times New Roman", Georgia, serif;
+      font-size: clamp(10.2rem, 22.5vw, 16.5rem);
+      line-height: 0.84;
+      animation-delay: 0s;
+      text-shadow: 0 18px 42px rgba(255, 255, 255, 0.12);
+    }
+
+    .intro-title {
+      margin-top: 46px;
+      font-family: "Oregano", "Bodoni 72", "Didot", Georgia, serif;
+      font-size: clamp(2.78rem, 6.53vw, 5.18rem);
+      line-height: 0.95;
+      font-weight: 400;
+      animation-delay: 2s;
+    }
+
+    .intro-credit {
+      margin-top: 14px;
+      font-family: "Oregano", "Aptos", "Segoe UI Variable Text", "Segoe UI", sans-serif;
+      font-size: clamp(1.43rem, 2.48vw, 1.77rem);
+      line-height: 1;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      text-transform: none;
+      color: rgba(255, 255, 255, 0.76);
+      animation-delay: 4s;
+    }
+
+    @keyframes introFadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    button, select {
+      font: inherit;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 308px minmax(0, 1fr);
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 26px 22px;
+      border-right: 1px solid var(--line);
+      background: var(--sidebar-bg);
+      backdrop-filter: blur(18px);
+      overflow: auto;
+      box-shadow: 16px 0 42px rgba(28, 38, 33, 0.05);
+      scrollbar-color: var(--ink) transparent;
+      scrollbar-width: thin;
+    }
+
+    .brand {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+    }
+
+    .brand::after {
+      content: "";
+      position: absolute;
+      left: 9px;
+      right: 0;
+      bottom: 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand-copy {
+      display: grid;
+      align-content: center;
+      gap: 8px;
+      min-height: 58px;
+    }
+
+    .logo {
+      position: relative;
+      width: 58px;
+      height: 58px;
+      border-radius: 8px;
+      overflow: hidden;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 35% 20%, rgba(255, 255, 255, 0.16), transparent 34%),
+        linear-gradient(145deg, #261b1d, #050505 74%);
+      box-shadow: 0 15px 32px rgba(28, 38, 33, 0.24);
+    }
+
+    .logo::after {
+      content: "";
+      position: absolute;
+      inset: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 6px;
+      pointer-events: none;
+    }
+
+    .logo-clef {
+      color: #ffffff;
+      font-family: "Times New Roman", Georgia, serif;
+      font-size: 1.95rem;
+      line-height: 0;
+      display: block;
+      transform: translateY(-1px);
+      text-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+    }
+
+    h1 {
+      margin: 0;
+      font-family: "Capriola", "Segoe UI Variable Display", "Segoe UI", sans-serif;
+      font-size: 1.45rem;
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+
+    .version-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-self: start;
+      min-height: 24px;
+      padding: 0 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      background: var(--surface-bg);
+      font-size: 0.7rem;
+      font-weight: 900;
+    }
+
+    .section-label {
+      display: grid;
+      grid-template-columns: 22px auto;
+      align-items: center;
+      column-gap: 4px;
+      margin: 24px 0 10px;
+      color: var(--ink);
+      font-size: 0.84rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .section-icon {
+      width: 22px;
+      height: 18px;
+      flex: 0 0 auto;
+      color: currentColor;
+      display: inline-grid;
+      place-items: center start;
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .section-label > span:last-child {
+      min-width: 0;
+    }
+
+    #libraryLabel {
+      column-gap: 7px;
+    }
+
+    .mode-icon,
+    .book-icon,
+    .star-icon {
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .note-icon {
+      font-size: 22px;
+      line-height: 0.88;
+      transform: translateY(-1px);
+    }
+
+    .segmented {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 7px;
+      padding: 6px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--control-bg);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.34);
+    }
+
+    .segmented button,
+    .root-grid button,
+    .library button,
+    .action {
+      border: 0;
+      cursor: pointer;
+      transition: transform 140ms ease, background 140ms ease, color 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+    }
+
+    .segmented button {
+      min-height: 42px;
+      min-width: 0;
+      border-radius: 6px;
+      color: var(--muted);
+      background: transparent;
+      font-weight: 800;
+      font-size: 0.95rem;
+      overflow-wrap: anywhere;
+    }
+
+    button:hover {
+      box-shadow: none;
+    }
+
+    .segmented button:not(.active):hover,
+    .root-grid button:not(.active):hover,
+    .library button:not(.active):hover,
+    .favorites button:hover,
+    .inversions button:not(.active):hover,
+    .scale-options button:not(.active):hover,
+    .top-icon-button:not(.favorite-on):hover,
+    .theme-toggle:hover,
+    .progression-picker-toggle:hover,
+    .progression-option:not(.active):hover,
+    .progression-favorite:not(.favorite-on):hover,
+    .about-close:hover {
+      transform: translateY(-1px);
+      border-color: var(--ink);
+      background: var(--soft-surface);
+      color: var(--ink);
+    }
+
+    .action:hover,
+    .segmented button.active:hover,
+    .root-grid button.active:hover,
+    .library button.active:hover,
+    .top-icon-button.favorite-on:hover,
+    .progression-play:hover,
+    .progression-favorite.favorite-on:hover,
+    .progression-action:hover,
+    .progression-option.active:hover {
+      transform: translateY(-1px);
+      box-shadow: none;
+      filter: brightness(1.04);
+    }
+
+    button:focus-visible {
+      outline: 0;
+      box-shadow: var(--focus-ring);
+    }
+
+    .segmented button.active {
+      color: white;
+      background: var(--accent);
+    }
+
+    .root-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 9px;
+    }
+
+    .root-grid button {
+      min-height: 46px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--ink);
+      font-weight: 850;
+      box-shadow: 0 8px 18px rgba(28, 38, 33, 0.055);
+    }
+
+    .root-grid button.active {
+      color: white;
+      background: var(--accent-2);
+      border-color: var(--accent-2);
+    }
+
+    .library {
+      display: grid;
+      gap: 8px;
+      max-height: 45vh;
+      overflow: auto;
+      padding-right: 5px;
+      scrollbar-color: var(--ink) transparent;
+      scrollbar-width: thin;
+    }
+
+    .library::-webkit-scrollbar,
+    .sidebar::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    .library::-webkit-scrollbar-track,
+    .sidebar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .library::-webkit-scrollbar-thumb,
+    .sidebar::-webkit-scrollbar-thumb {
+      background: var(--ink);
+      border: 3px solid transparent;
+      border-radius: 999px;
+      background-clip: padding-box;
+    }
+
+    .library::-webkit-scrollbar-button,
+    .sidebar::-webkit-scrollbar-button {
+      width: 10px;
+      height: 14px;
+      background: transparent;
+    }
+
+    .library::-webkit-scrollbar-button:single-button:vertical:decrement,
+    .sidebar::-webkit-scrollbar-button:single-button:vertical:decrement {
+      border-style: solid;
+      border-width: 0 5px 7px;
+      border-color: transparent transparent var(--ink);
+    }
+
+    .library::-webkit-scrollbar-button:single-button:vertical:increment,
+    .sidebar::-webkit-scrollbar-button:single-button:vertical:increment {
+      border-style: solid;
+      border-width: 7px 5px 0;
+      border-color: var(--ink) transparent transparent;
+    }
+
+    .library button {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      min-height: 46px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--ink);
+      background: var(--surface-bg);
+      text-align: left;
+      box-shadow: 0 9px 20px rgba(28, 38, 33, 0.05);
+    }
+
+    .library button:not(.active):hover,
+    .library button.active:hover {
+      transform: none;
+    }
+
+    .library button.active {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      box-shadow: inset 4px 0 0 var(--accent);
+    }
+
+    .library small {
+      color: var(--muted);
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .favorites-shell {
+      margin-top: 22px;
+    }
+
+    .favorites {
+      display: grid;
+      gap: 10px;
+    }
+
+    .favorite-folder {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface-bg);
+      overflow: hidden;
+      box-shadow: 0 9px 20px rgba(28, 38, 33, 0.045);
+    }
+
+    .favorite-folder-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 34px;
+      padding: 8px 11px;
+      border-bottom: 1px solid var(--line);
+      color: var(--ink);
+      font-size: 0.78rem;
+      font-weight: 900;
+    }
+
+    .favorite-folder-list {
+      display: grid;
+      gap: 6px;
+      padding: 8px;
+    }
+
+    .favorites button {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      min-height: 42px;
+      padding: 9px 11px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      color: var(--ink);
+      cursor: pointer;
+      text-align: left;
+      box-shadow: none;
+    }
+
+    .favorites button strong {
+      min-width: 0;
+      overflow-wrap: anywhere;
+      font-size: 0.86rem;
+    }
+
+    .favorites button small,
+    .favorites-empty {
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 850;
+    }
+
+    .favorites-empty {
+      margin: 0;
+      padding: 2px 3px;
+    }
+
+    main {
+      min-width: 0;
+      padding: 30px clamp(24px, 3vw, 44px) 42px;
+      display: grid;
+      align-content: start;
+      gap: 22px;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(270px, 0.75fr);
+      gap: 22px;
+      align-items: end;
+      padding-bottom: 4px;
+    }
+
+    .theme-toggle {
+      min-height: 40px;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface-bg);
+      color: var(--ink);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 850;
+      box-shadow: 0 12px 28px rgba(28, 38, 33, 0.11);
+      transition: background 140ms ease, color 140ms ease, border-color 140ms ease, transform 140ms ease;
+    }
+
+    .top-icon-button {
+      min-height: 40px;
+      padding: 0 13px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface-bg);
+      color: var(--ink);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-weight: 900;
+      box-shadow: 0 12px 28px rgba(28, 38, 33, 0.09);
+      transition: background 140ms ease, color 140ms ease, border-color 140ms ease, transform 140ms ease;
+    }
+
+    .theme-toggle:hover,
+    .top-icon-button:hover {
+      transform: translateY(-1px);
+    }
+
+    .top-icon-button.favorite-on {
+      color: #ffffff;
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .top-icon-button .button-icon {
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .top-icon-button .button-text {
+      font-size: 0.82rem;
+    }
+
+    .theme-toggle .theme-icon {
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .theme-toggle .theme-text {
+      font-size: 0.82rem;
+    }
+
+    .fullscreen-toggle {
+      width: 40px;
+      min-width: 40px;
+      height: 40px;
+      min-height: 40px;
+      padding: 0;
+      display: inline-grid;
+      place-items: center;
+      justify-content: center;
+    }
+
+    .fullscreen-toggle .button-icon {
+      width: 16px;
+      height: 16px;
+      display: block;
+      color: currentColor;
+      font-size: 0;
+      line-height: 0;
+      transform: none;
+      background:
+        linear-gradient(currentColor, currentColor) left top / 7px 2px no-repeat,
+        linear-gradient(currentColor, currentColor) left top / 2px 7px no-repeat,
+        linear-gradient(currentColor, currentColor) right top / 7px 2px no-repeat,
+        linear-gradient(currentColor, currentColor) right top / 2px 7px no-repeat,
+        linear-gradient(currentColor, currentColor) left bottom / 7px 2px no-repeat,
+        linear-gradient(currentColor, currentColor) left bottom / 2px 7px no-repeat,
+        linear-gradient(currentColor, currentColor) right bottom / 7px 2px no-repeat,
+        linear-gradient(currentColor, currentColor) right bottom / 2px 7px no-repeat;
+    }
+
+    .fullscreen-toggle.is-fullscreen {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #ffffff;
+    }
+
+    .fullscreen-toggle.is-fullscreen:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #ffffff;
+    }
+
+    .title-block h2 {
+      margin: 0;
+      font-family: "Capriola", "Segoe UI Variable Display", "Segoe UI", sans-serif;
+      font-size: clamp(2.45rem, 4vw, 4.25rem);
+      line-height: 1.02;
+      letter-spacing: 0;
+      white-space: nowrap;
+      max-width: 100%;
+    }
+
+    .title-block h2.long-title {
+      font-size: clamp(2.05rem, 3.35vw, 3.45rem);
+    }
+
+    .title-block h2.extra-long-title {
+      font-size: clamp(1.72rem, 2.85vw, 2.95rem);
+    }
+
+    .mode-kicker {
+      display: none;
+    }
+
+    .title-block p {
+      max-width: 760px;
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: clamp(1rem, 1.05vw, 1.15rem);
+      line-height: 1.58;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      padding-bottom: 6px;
+    }
+
+    .top-actions {
+      align-self: end;
+      justify-self: end;
+    }
+
+    .action {
+      min-height: 48px;
+      padding: 0 18px;
+      border-radius: 8px;
+      background: var(--primary-action-bg);
+      color: var(--primary-action-text);
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 15px 32px rgba(28, 38, 33, 0.16);
+    }
+
+    .action.secondary {
+      color: var(--ink);
+      background: var(--surface-bg);
+      border: 1px solid var(--line);
+      box-shadow: 0 12px 28px rgba(28, 38, 33, 0.08);
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(270px, 0.75fr);
+      gap: 22px;
+    }
+
+    .panel {
+      background: var(--surface-bg);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--panel-shadow);
+      backdrop-filter: blur(12px);
+      overflow: hidden;
+    }
+
+    .panel-header {
+      padding: 22px 22px 0;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: baseline;
+    }
+
+    .piano-header {
+      align-items: flex-start;
+    }
+
+    .piano-title-group {
+      display: grid;
+      gap: 12px;
+    }
+
+    .piano-control-row {
+      display: flex;
+      align-items: stretch;
+      gap: 10px;
+      width: min(100%, 250px);
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+
+    .piano-control-row .action {
+      flex: 0 0 118px;
+      justify-content: center;
+      min-height: 54px;
+      padding: 0 16px;
+    }
+
+    .panel h3 {
+      margin: 0;
+      font-family: "Capriola", "Segoe UI Variable Display", "Segoe UI", sans-serif;
+      font-size: 1.08rem;
+      letter-spacing: 0;
+    }
+
+    .panel .hint {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .notes {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(78px, 1fr));
+      gap: 12px;
+      padding: 22px;
+    }
+
+    .notes.scale-grid,
+    .notes.arp-grid {
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+      gap: 9px;
+    }
+
+    .notes.arp-grid .note-cell {
+      grid-template-rows: auto;
+    }
+
+    .notes.arp-grid .note-index {
+      display: none;
+    }
+
+    .note-cell {
+      display: grid;
+      grid-template-rows: auto auto;
+      gap: 8px;
+      min-width: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      appearance: none;
+      color: inherit;
+      cursor: pointer;
+      font: inherit;
+      text-align: center;
+    }
+
+    .inversions,
+    .scale-options {
+      display: none;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 0 22px 22px;
+    }
+
+    .inversions.show,
+    .scale-options.show {
+      display: flex;
+    }
+
+    .inversions button,
+    .scale-options button {
+      min-height: 38px;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--soft-surface);
+      color: var(--ink);
+      cursor: pointer;
+      font-weight: 900;
+      box-shadow: 0 9px 18px rgba(28, 38, 33, 0.06);
+    }
+
+    .inversions button.active,
+    .scale-options button.active {
+      border-color: var(--selected-key);
+      background: var(--selected-key);
+      color: #ffffff;
+    }
+
+    .note-pill {
+      min-width: 0;
+      min-height: 82px;
+      padding: 11px 6px;
+      border-radius: 8px;
+      background:
+        linear-gradient(160deg, rgba(255, 255, 255, 0.06), transparent 42%),
+        var(--note-pill-bg);
+      color: var(--note-pill-text);
+      text-align: center;
+      font-family: "Capriola", "Segoe UI Variable Display", "Segoe UI", sans-serif;
+      font-size: 1.04rem;
+      font-weight: 900;
+      display: grid;
+      align-content: center;
+      box-shadow: 0 13px 26px rgba(13, 22, 18, 0.16);
+      transform: translate3d(0, 0, 0);
+      transition:
+        transform 170ms cubic-bezier(0.16, 1, 0.3, 1),
+        filter 170ms ease,
+        background 170ms ease;
+    }
+
+    .note-pill small {
+      display: block;
+      margin-top: 5px;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 0.68rem;
+      font-weight: 850;
+    }
+
+    .note-cell:hover .note-pill,
+    .note-cell:focus-visible .note-pill {
+      filter: brightness(1.08);
+      transform: translate3d(0, -1px, 0);
+    }
+
+    .note-cell:hover .note-index,
+    .note-cell:focus-visible .note-index {
+      border-color: var(--interactive-outline);
+      color: var(--ink);
+    }
+
+    .note-cell:focus-visible {
+      outline: none;
+    }
+
+    .note-cell.pressed .note-pill {
+      filter: brightness(0.92);
+      transform: translate3d(0, 5px, 0) scale(0.985);
+    }
+
+    .note-cell.pressed .note-index {
+      transform: translate3d(0, 2px, 0);
+    }
+
+    .formula {
+      display: none;
+    }
+
+    .note-index {
+      min-height: 31px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--muted);
+      background: var(--soft-surface);
+      font-weight: 900;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28);
+      transition:
+        transform 170ms cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 170ms ease,
+        color 170ms ease;
+    }
+
+    .keyboard-wrap {
+      position: relative;
+      padding: 22px;
+      overflow-x: auto;
+    }
+
+    .keyboard-wrap::before {
+      content: "";
+      position: absolute;
+      top: 15px;
+      left: 28px;
+      right: 28px;
+      height: 7px;
+      border-radius: 999px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.2), transparent 62%),
+        linear-gradient(90deg, #6e1015, #a31f27 18%, #7b141a 50%, #a31f27 82%, #6e1015);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.18), 0 3px 7px rgba(42, 5, 8, 0.28);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .keyboard {
+      position: relative;
+      min-width: 790px;
+      height: 248px;
+      padding: 0 5px 5px;
+      display: flex;
+      align-items: stretch;
+      background: var(--keyboard-frame);
+      border-radius: 8px;
+      box-shadow:
+        inset 0 0 0 5px var(--keyboard-frame),
+        0 18px 34px rgba(28, 38, 33, 0.12);
+    }
+
+    .key {
+      position: relative;
+      border: 0;
+      cursor: pointer;
+      user-select: none;
+      transform-origin: top center;
+      transform: translate3d(0, 0, 0);
+      transition:
+        transform 180ms cubic-bezier(0.16, 1, 0.3, 1),
+        background 160ms ease,
+        box-shadow 160ms ease,
+        border-color 160ms ease,
+        filter 160ms ease;
+      will-change: transform;
+      backface-visibility: hidden;
+    }
+
+    .key.white {
+      width: calc(100% / 21);
+      height: 100%;
+      margin: 0 1px;
+      border-radius: 0 0 7px 7px;
+      background:
+        linear-gradient(90deg, rgba(0, 0, 0, 0.055), transparent 13%, transparent 86%, rgba(0, 0, 0, 0.07)),
+        linear-gradient(180deg, #ffffff 0%, #ffffff 58%, #f3f2ed 100%);
+      border: 1px solid #d4d4d4;
+      box-shadow:
+        inset 0 -13px 18px rgba(0, 0, 0, 0.09),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      z-index: 1;
+    }
+
+    .key.black {
+      position: absolute;
+      top: 0;
+      width: 2.45%;
+      height: 62%;
+      border-radius: 0 0 6px 6px;
+      background:
+        linear-gradient(90deg, #050505, #000000 45%, #151515 100%);
+      z-index: 3;
+      box-shadow:
+        0 9px 13px rgba(0, 0, 0, 0.34),
+        inset 0 -10px 16px rgba(255, 255, 255, 0.04);
+    }
+
+    .key.in-pattern.white,
+    .key.root.white {
+      background:
+        linear-gradient(90deg, rgba(0, 0, 0, 0.08), transparent 16%, transparent 84%, rgba(0, 0, 0, 0.12)),
+        linear-gradient(180deg, #a32931 0%, var(--selected-key) 72%, #74181e 100%);
+      border-color: #641318;
+    }
+
+    .key.in-pattern.black,
+    .key.root.black {
+      background: var(--selected-black-key);
+      border-color: #3e090d;
+    }
+
+    .key.white:hover {
+      background:
+        linear-gradient(90deg, rgba(35, 135, 205, 0.12), rgba(195, 232, 255, 0.24) 18%, rgba(195, 232, 255, 0.25) 82%, rgba(35, 135, 205, 0.14)),
+        linear-gradient(180deg, #ffffff 0%, #dff4ff 50%, #bfe7ff 100%);
+      border-color: #8bcdf3;
+      box-shadow:
+        inset 0 0 0 2px rgba(147, 218, 255, 0.78),
+        inset 0 -13px 18px rgba(0, 76, 135, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    }
+
+    .key.black:hover {
+      background:
+        linear-gradient(90deg, #031826, #061f31 48%, #0a2f47 100%);
+      box-shadow:
+        0 8px 12px rgba(0, 0, 0, 0.32),
+        inset 0 0 0 2px rgba(151, 220, 255, 0.86),
+        inset 0 -10px 16px rgba(255, 255, 255, 0.06);
+    }
+
+    .key.in-pattern.white:hover,
+    .key.root.white:hover {
+      box-shadow:
+        inset 0 0 0 3px rgba(151, 220, 255, 0.92),
+        inset 0 -13px 18px rgba(0, 0, 0, 0.13),
+        inset 0 1px 0 rgba(255, 255, 255, 0.32);
+    }
+
+    .key.in-pattern.black:hover,
+    .key.root.black:hover {
+      background:
+        linear-gradient(90deg, #220307, var(--selected-black-key) 50%, #4b0a10);
+      box-shadow:
+        0 8px 12px rgba(0, 0, 0, 0.34),
+        inset 0 0 0 2px rgba(151, 220, 255, 0.88),
+        inset 0 -10px 16px rgba(255, 255, 255, 0.05);
+    }
+
+    .key.white:active,
+    .key.white.pressed,
+    .key.in-pattern.white:active,
+    .key.root.white:active,
+    .key.in-pattern.white.pressed,
+    .key.root.white.pressed {
+      background:
+        linear-gradient(90deg, rgba(35, 135, 205, 0.12), rgba(195, 232, 255, 0.24) 18%, rgba(195, 232, 255, 0.25) 82%, rgba(35, 135, 205, 0.14)),
+        linear-gradient(180deg, #ffffff 0%, #dff4ff 50%, #bfe7ff 100%);
+      border-color: #8bcdf3;
+      transform: translate3d(0, 8px, 0) scaleY(0.982);
+      filter: brightness(0.98);
+      box-shadow:
+        inset 0 0 0 2px rgba(147, 218, 255, 0.78),
+        inset 0 8px 20px rgba(0, 0, 0, 0.18),
+        inset 0 -6px 12px rgba(255, 255, 255, 0.26);
+    }
+
+    .key.white:active .key-label,
+    .key.white.pressed .key-label,
+    .key.in-pattern.white:active .key-label,
+    .key.root.white:active .key-label,
+    .key.in-pattern.white.pressed .key-label,
+    .key.root.white.pressed .key-label {
+      color: var(--white-key-label);
+    }
+
+    .key.black:active,
+    .key.black.pressed,
+    .key.in-pattern.black:active,
+    .key.root.black:active,
+    .key.in-pattern.black.pressed,
+    .key.root.black.pressed {
+      background:
+        linear-gradient(90deg, #031826, #061f31 48%, #0a2f47 100%);
+      transform: translate3d(0, 7px, 0) scaleY(0.965);
+      filter: brightness(0.88);
+      box-shadow:
+        0 3px 6px rgba(0, 0, 0, 0.28),
+        inset 0 0 0 2px rgba(151, 220, 255, 0.86),
+        inset 0 8px 15px rgba(0, 0, 0, 0.36),
+        inset 0 -5px 10px rgba(255, 255, 255, 0.05);
+    }
+
+    .key-label {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--white-key-label);
+      font-size: 0.76rem;
+      font-weight: 900;
+      pointer-events: none;
+    }
+
+    .black .key-label {
+      bottom: 8px;
+      color: white;
+      font-size: 0.68rem;
+    }
+
+    .black .key-label span {
+      display: block;
+      line-height: 1.05;
+    }
+
+    .black .key-label .flat-name {
+      margin-bottom: 3px;
+      opacity: 0.78;
+      font-size: 0.62rem;
+    }
+
+    .root.white .key-label,
+    .root.black .key-label,
+    .in-pattern.white .key-label,
+    .in-pattern.black .key-label {
+      color: white;
+    }
+
+    .details {
+      padding: 20px 22px 22px;
+      display: grid;
+      gap: 0;
+    }
+
+    .detail-row {
+      display: grid;
+      grid-template-columns: 112px 1fr;
+      gap: 12px;
+      padding: 15px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .detail-row:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .detail-row strong {
+      color: var(--muted);
+      font-size: 0.86rem;
+      letter-spacing: 0;
+    }
+
+    .detail-row span {
+      line-height: 1.45;
+      font-weight: 850;
+    }
+
+    .practice {
+      padding: 22px;
+      display: grid;
+      gap: 14px;
+      grid-template-columns: 1fr;
+    }
+
+    .scale-chords {
+      padding: 22px;
+      display: grid;
+      grid-template-columns: repeat(7, minmax(92px, 1fr));
+      gap: 10px;
+      overflow-x: auto;
+    }
+
+    .scale-chord-card {
+      min-height: 82px;
+      min-width: 0;
+      padding: 14px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--card-bg);
+      appearance: none;
+      color: inherit;
+      cursor: pointer;
+      display: grid;
+      align-content: center;
+      gap: 5px;
+      font: inherit;
+      text-align: center;
+      transform: translate3d(0, 0, 0);
+      transition:
+        transform 170ms cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 170ms ease,
+        background 170ms ease,
+        filter 170ms ease;
+    }
+
+    .scale-chord-card strong {
+      color: var(--ink);
+      font-size: clamp(1.03rem, 1.25vw, 1.32rem);
+      font-weight: 900;
+      line-height: 1.1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .scale-chord-card span,
+    .scale-chord-card small {
+      color: var(--muted);
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .scale-chord-card span {
+      font-size: 0.78rem;
+      margin-bottom: 7px;
+      text-transform: uppercase;
+    }
+
+    .scale-chord-card small {
+      font-size: 0.72rem;
+    }
+
+    .scale-chord-card:hover,
+    .scale-chord-card:focus-visible {
+      border-color: var(--interactive-outline);
+      background: var(--soft-surface);
+      outline: none;
+      transform: translate3d(0, -1px, 0);
+    }
+
+    .scale-chord-card.pressed {
+      border-color: var(--interactive-outline);
+      filter: brightness(0.94);
+      transform: translate3d(0, 5px, 0) scale(0.985);
+    }
+
+    .practice-card {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--card-bg);
+      box-shadow: 0 12px 26px rgba(28, 38, 33, 0.07);
+    }
+
+    .practice-card.progression-card {
+      display: grid;
+      grid-template-columns: minmax(108px, auto) minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 18px;
+      padding: 18px 20px;
+    }
+
+    .practice-card h4 {
+      margin: 0 0 8px;
+      font-size: 0.98rem;
+      letter-spacing: 0;
+      text-align: center;
+    }
+
+    .practice-card.progression-card h4 {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.02rem;
+      font-weight: 900;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    .practice-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 0.94rem;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .practice-card.progression-card p {
+      color: var(--ink);
+      font-size: clamp(1.18rem, 1.45vw, 1.46rem);
+      font-weight: 900;
+      line-height: 1.22;
+      text-align: left;
+    }
+
+    .progression-play {
+      min-width: 76px;
+      min-height: 44px;
+      padding: 0 14px;
+      border: 0;
+      border-radius: 8px;
+      background: var(--primary-action-bg);
+      color: var(--primary-action-text);
+      cursor: pointer;
+      font-weight: 900;
+      box-shadow: 0 13px 26px rgba(28, 38, 33, 0.14);
+    }
+
+    .progression-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .progression-favorite {
+      min-width: 44px;
+      min-height: 44px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface-bg);
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 900;
+      box-shadow: 0 10px 22px rgba(28, 38, 33, 0.08);
+    }
+
+    .progression-favorite.favorite-on {
+      color: #ffffff;
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .progression-controls {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: minmax(220px, 1.2fr) minmax(190px, 0.8fr);
+      gap: 10px;
+      align-items: start;
+      margin-top: 2px;
+    }
+
+    .progression-action,
+    .progression-picker-toggle,
+    .progression-option {
+      min-height: 44px;
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--soft-surface);
+      color: var(--ink);
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    .progression-action {
+      background: var(--primary-action-bg);
+      color: var(--primary-action-text);
+      box-shadow: 0 12px 26px rgba(28, 38, 33, 0.12);
+    }
+
+    .progression-picker {
+      position: relative;
+    }
+
+    .progression-picker-toggle {
+      width: 100%;
+      padding: 9px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      text-align: left;
+    }
+
+    .progression-picker-toggle span:first-child {
+      min-width: 0;
+      overflow-wrap: anywhere;
+      line-height: 1.2;
+    }
+
+    .progression-menu {
+      position: absolute;
+      z-index: 20;
+      bottom: calc(100% + 7px);
+      left: 0;
+      right: 0;
+      max-height: min(560px, 76vh);
+      overflow: auto;
+      padding: 6px;
+      display: grid;
+      gap: 5px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface-bg);
+      box-shadow: var(--panel-shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .progression-menu[hidden] {
+      display: none;
+    }
+
+    .progression-option {
+      width: 100%;
+      min-height: 36px;
+      padding: 8px 10px;
+      text-align: left;
+      background: transparent;
+      border-color: transparent;
+      box-shadow: none;
+      overflow-wrap: anywhere;
+    }
+
+    .progression-option.active {
+      color: white;
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .circle-view {
+      --circle-radius: min(205px, 36vw);
+      position: relative;
+      width: min(100%, 520px);
+      aspect-ratio: 1;
+      margin: 0 auto;
+    }
+
+    .circle-ring {
+      position: absolute;
+      inset: 11%;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background:
+        radial-gradient(circle, rgba(139, 30, 36, 0.12) 0 28%, transparent 29%),
+        conic-gradient(from -15deg, rgba(139, 30, 36, 0.11), transparent 12%, rgba(139, 30, 36, 0.08) 25%, transparent 42%, rgba(139, 30, 36, 0.1) 58%, transparent 78%, rgba(139, 30, 36, 0.11)),
+        var(--soft-surface);
+      box-shadow: inset 0 0 0 18px rgba(255, 255, 255, 0.08);
+    }
+
+    body.dark-mode .circle-ring {
+      background:
+        radial-gradient(circle, rgba(255, 255, 255, 0.045) 0 28%, transparent 29%),
+        conic-gradient(from -15deg, rgba(255, 255, 255, 0.07), transparent 12%, rgba(255, 255, 255, 0.055) 25%, transparent 42%, rgba(255, 255, 255, 0.065) 58%, transparent 78%, rgba(255, 255, 255, 0.07)),
+        var(--soft-surface);
+      box-shadow: inset 0 0 0 18px rgba(255, 255, 255, 0.035);
+    }
+
+    .circle-center {
+      position: absolute;
+      inset: 32%;
+      display: grid;
+      place-content: center;
+      justify-items: center;
+      gap: 10px;
+      border-radius: 50%;
+      background:
+        linear-gradient(160deg, rgba(255, 255, 255, 0.08), transparent 42%),
+        var(--note-pill-bg);
+      color: white;
+      text-align: center;
+      font-weight: 900;
+      box-shadow: 0 16px 34px rgba(28, 38, 33, 0.22);
+    }
+
+    .circle-center strong {
+      display: block;
+      font-size: clamp(2.1rem, 4.4vw, 3.7rem);
+      line-height: 0.9;
+    }
+
+    .circle-center small {
+      display: block;
+      margin-top: 0;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: clamp(1.28rem, 2.6vw, 2.25rem);
+      line-height: 0.95;
+    }
+
+    .circle-node {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 82px;
+      min-height: 54px;
+      transform:
+        rotate(var(--angle))
+        translateY(calc(var(--circle-radius) * -1))
+        rotate(calc(var(--angle) * -1))
+        translate(-50%, -50%);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface-bg);
+      color: var(--ink);
+      cursor: pointer;
+      font-weight: 900;
+      box-shadow: 0 10px 22px rgba(28, 38, 33, 0.12);
+    }
+
+    .circle-node.active {
+      border-color: var(--selected-key);
+      background: var(--selected-key);
+      color: white;
+    }
+
+    .circle-node small {
+      display: block;
+      margin-top: 2px;
+      color: currentColor;
+      opacity: 0.72;
+      font-size: 0.7rem;
+      font-weight: 850;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 70;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+      background: rgba(8, 12, 10, 0.52);
+      backdrop-filter: blur(8px);
+    }
+
+    .modal[hidden] {
+      display: none;
+    }
+
+    .about-card {
+      width: min(100%, 560px);
+      max-height: min(760px, 88vh);
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      color: var(--ink);
+      box-shadow: 0 32px 80px rgba(0, 0, 0, 0.34);
+    }
+
+    .about-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 22px 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .about-header h3 {
+      margin: 0;
+      font-family: "Capriola", "Segoe UI Variable Display", "Segoe UI", sans-serif;
+      font-size: 1.32rem;
+      letter-spacing: 0;
+    }
+
+    .about-close {
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: var(--surface-bg);
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 1.25rem;
+      font-weight: 900;
+    }
+
+    .about-body {
+      display: grid;
+      gap: 14px;
+      padding: 18px 22px 22px;
+    }
+
+    .about-body p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .about-list {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .about-list li {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface-bg);
+      line-height: 1.45;
+    }
+
+    .about-list strong {
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    @media (max-width: 980px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+        height: auto;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .brand {
+        margin-bottom: 18px;
+      }
+
+      .library {
+        max-height: none;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        grid-template-columns: 1fr;
+        align-items: flex-start;
+      }
+
+      .actions {
+        justify-content: flex-start;
+        width: 100%;
+      }
+
+      .top-actions {
+        justify-content: flex-end;
+        justify-self: flex-end;
+        width: auto;
+        margin-left: 0;
+      }
+
+      .piano-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .circle-node {
+        width: 70px;
+        min-height: 48px;
+        transform:
+          rotate(var(--angle))
+          translateY(calc(var(--circle-radius) * -1))
+          rotate(calc(var(--angle) * -1))
+          translate(-50%, -50%);
+      }
+    }
+
+    @media (max-width: 620px) {
+      .sidebar,
+      main {
+        padding: 18px;
+      }
+
+      .app {
+        display: block;
+      }
+
+      .segmented {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .title-block h2 {
+        font-size: clamp(1.6rem, 7.4vw, 2.55rem);
+      }
+
+      .title-block h2.long-title,
+      .title-block h2.extra-long-title {
+        font-size: clamp(1.34rem, 6.4vw, 2.05rem);
+      }
+
+      .action {
+        flex: 1 1 140px;
+        justify-content: center;
+      }
+
+      .piano-control-row {
+        width: 100%;
+      }
+
+      .root-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .detail-row {
+        grid-template-columns: 1fr;
+        gap: 4px;
+      }
+
+      .notes.scale-grid,
+      .notes.arp-grid {
+        grid-template-columns: repeat(4, minmax(64px, 1fr));
+      }
+
+      .notes {
+        padding: 18px;
+      }
+
+      .note-pill {
+        min-height: 74px;
+      }
+
+      .practice {
+        grid-template-columns: 1fr;
+      }
+
+      .progression-controls {
+        grid-template-columns: 1fr;
+      }
+
+      .practice-card.progression-card {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .progression-play {
+        width: 100%;
+      }
+
+      .progression-actions {
+        width: 100%;
+      }
+
+      .progression-favorite {
+        flex: 0 0 52px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="splash" id="splash" aria-hidden="true">
+    <div class="splash-card">
+      <div class="intro-clef" aria-hidden="true">&#119070;</div>
+      <div class="intro-title">Piano Atlas</div>
+      <div class="intro-credit">created by Vulshy</div>
+    </div>
+  </div>
+
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <span class="logo-clef">&#119070;</span>
+        </div>
+        <div class="brand-copy">
+          <h1>Piano Atlas</h1>
+          <span class="version-badge" id="versionBadge">v1.0.0</span>
+        </div>
+      </div>
+
+      <span class="section-label">
+        <span class="section-icon mode-icon" aria-hidden="true">☰</span>
+        <span>Mode</span>
+      </span>
+      <div class="segmented" role="tablist" aria-label="Reference mode">
+        <button class="active" id="scaleMode" type="button">Scales</button>
+        <button id="chordMode" type="button">Chords</button>
+        <button id="arpMode" type="button">Arpeggios</button>
+        <button id="circleMode" type="button">Circle</button>
+      </div>
+
+      <span class="section-label">
+        <span class="section-icon note-icon" aria-hidden="true">♫</span>
+        <span>Root Note</span>
+      </span>
+      <div class="root-grid" id="rootGrid"></div>
+
+      <span class="section-label" id="libraryLabel">
+        <span class="section-icon book-icon" aria-hidden="true">🕮</span>
+        <span id="libraryLabelText">Scale Library</span>
+      </span>
+      <div class="library" id="library"></div>
+
+      <div class="favorites-shell">
+        <span class="section-label">
+          <span class="section-icon star-icon" aria-hidden="true">☆</span>
+          <span>Favorites</span>
+        </span>
+        <div class="favorites" id="favoritesList"></div>
+      </div>
+    </aside>
+
+    <main>
+      <div class="topbar">
+        <div class="title-block">
+          <div class="mode-kicker" id="modeKicker">Scales</div>
+          <h2 id="headline">C Major</h2>
+          <p id="description"></p>
+        </div>
+        <div class="actions top-actions">
+          <button class="top-icon-button" type="button" id="favoriteToggle" aria-label="Add current item to favorites">
+            <span class="button-icon" aria-hidden="true">☆</span>
+            <span class="button-text">Favorite</span>
+          </button>
+          <button class="top-icon-button" type="button" id="helpToggle" aria-label="Open help">
+            <span class="button-icon" aria-hidden="true">?</span>
+            <span class="button-text">Help</span>
+          </button>
+          <button class="theme-toggle" type="button" id="themeToggle" aria-label="Switch to dark mode">
+            <span class="theme-icon" aria-hidden="true">☾</span>
+            <span class="theme-text">Dark mode</span>
+          </button>
+          <button class="top-icon-button fullscreen-toggle" type="button" id="fullscreenToggle" aria-label="Enter fullscreen">
+            <span class="button-icon" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="content-grid">
+        <section class="panel">
+          <div class="panel-header">
+            <h3>Notes</h3>
+            <p class="hint" id="noteCount"></p>
+          </div>
+          <div class="notes" id="notes"></div>
+          <div class="formula" id="formula"></div>
+          <div class="scale-options" id="scaleOptions"></div>
+          <div class="inversions" id="inversions"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <h3>Details</h3>
+          </div>
+          <div class="details" id="details"></div>
+        </section>
+      </div>
+
+      <section class="panel">
+        <div class="panel-header piano-header">
+          <div class="piano-title-group">
+            <h3>Piano</h3>
+            <div class="piano-control-row">
+              <button class="action" type="button" id="playUp">▶ Play</button>
+              <button class="action secondary" type="button" id="playArp">↔ Pattern</button>
+            </div>
+          </div>
+          <p class="hint">Click any highlighted key to hear it</p>
+        </div>
+        <div class="keyboard-wrap">
+          <div class="keyboard" id="keyboard" aria-label="Piano keyboard"></div>
+        </div>
+      </section>
+
+      <section class="panel" id="scaleChordsPanel">
+        <div class="panel-header">
+          <h3>Chords in this scale</h3>
+        </div>
+        <div class="scale-chords" id="scaleChords"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h3 id="practiceTitle">Chord progressions</h3>
+        </div>
+        <div class="practice" id="practice"></div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal" id="aboutModal" role="dialog" aria-modal="true" aria-labelledby="aboutTitle" hidden>
+    <div class="about-card">
+      <div class="about-header">
+        <h3 id="aboutTitle">About Piano Atlas</h3>
+        <button class="about-close" type="button" id="closeAbout" aria-label="Close help">×</button>
+      </div>
+      <div class="about-body">
+        <p>Piano Atlas is a compact practice reference for piano scales, chords, arpeggios, fingerings, chord progressions, and the circle of fifths.</p>
+        <ul class="about-list">
+          <li><strong>Play</strong> Plays the selected scale, chord, arpeggio, or circle reference.</li>
+          <li><strong>Pattern</strong> Plays the notes as a moving pattern, useful for hearing the shape.</li>
+          <li><strong>Favorites</strong> Saves the current item in the sidebar so you can return to it quickly.</li>
+        </ul>
+        <p>Version <span id="aboutVersion">1.0.0</span></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const chromaticSharp = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+    const chromaticFlat = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"];
+    const roots = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"];
+    const preferFlats = new Set(["Db", "Eb", "F", "Gb", "Ab", "Bb"]);
+    const midiByName = { C: 0, "C#": 1, Db: 1, D: 2, "D#": 3, Eb: 3, E: 4, F: 5, "F#": 6, Gb: 6, G: 7, "G#": 8, Ab: 8, A: 9, "A#": 10, Bb: 10, B: 11 };
+    const circleKeys = [
+      { key: "C", minor: "Am", signature: "No sharps or flats", accidentals: "0", angle: 0 },
+      { key: "G", minor: "Em", signature: "1 sharp", accidentals: "F#", angle: 30 },
+      { key: "D", minor: "Bm", signature: "2 sharps", accidentals: "F# C#", angle: 60 },
+      { key: "A", minor: "F#m", signature: "3 sharps", accidentals: "F# C# G#", angle: 90 },
+      { key: "E", minor: "C#m", signature: "4 sharps", accidentals: "F# C# G# D#", angle: 120 },
+      { key: "B", minor: "G#m", signature: "5 sharps", accidentals: "F# C# G# D# A#", angle: 150 },
+      { key: "Gb", minor: "Ebm", signature: "6 flats", accidentals: "Bb Eb Ab Db Gb Cb", angle: 180 },
+      { key: "Db", minor: "Bbm", signature: "5 flats", accidentals: "Bb Eb Ab Db Gb", angle: 210 },
+      { key: "Ab", minor: "Fm", signature: "4 flats", accidentals: "Bb Eb Ab Db", angle: 240 },
+      { key: "Eb", minor: "Cm", signature: "3 flats", accidentals: "Bb Eb Ab", angle: 270 },
+      { key: "Bb", minor: "Gm", signature: "2 flats", accidentals: "Bb Eb", angle: 300 },
+      { key: "F", minor: "Dm", signature: "1 flat", accidentals: "Bb", angle: 330 }
+    ];
+
+    const scales = [
+      { name: "Major", short: "Ionian", intervals: [0, 2, 4, 5, 7, 9, 11], formula: ["1", "2", "3", "4", "5", "6", "7"], steps: "W W H W W W H", description: "Bright, settled, and the first sound most players learn." },
+      { name: "Natural Minor", short: "Aeolian", intervals: [0, 2, 3, 5, 7, 8, 10], formula: ["1", "2", "b3", "4", "5", "b6", "b7"], steps: "W H W W H W W", description: "Darker than major, common in pop, classical, and film music." },
+      { name: "Harmonic Minor", short: "Minor + 7", intervals: [0, 2, 3, 5, 7, 8, 11], formula: ["1", "2", "b3", "4", "5", "b6", "7"], steps: "W H W W H WH H", description: "Minor with a raised seventh, giving it a dramatic pull back home." },
+      { name: "Melodic Minor", short: "Jazz minor", intervals: [0, 2, 3, 5, 7, 9, 11], formula: ["1", "2", "b3", "4", "5", "6", "7"], steps: "W H W W W W H", description: "A flexible minor color used often in jazz and modern harmony." },
+      { name: "Major Pentatonic", short: "5 notes", intervals: [0, 2, 4, 7, 9], formula: ["1", "2", "3", "5", "6"], steps: "W W WH W WH", description: "Open, simple, and very useful for melodies." },
+      { name: "Minor Pentatonic", short: "5 notes", intervals: [0, 3, 5, 7, 10], formula: ["1", "b3", "4", "5", "b7"], steps: "WH W W WH W", description: "A core sound for blues, rock, soul, and improvisation." },
+      { name: "Blues", short: "6 notes", intervals: [0, 3, 5, 6, 7, 10], formula: ["1", "b3", "4", "b5", "5", "b7"], steps: "WH W H H WH W", description: "Minor pentatonic with the blue note added." },
+      { name: "Chromatic", short: "12 notes", intervals: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], formula: ["1", "b2", "2", "b3", "3", "4", "b5", "5", "b6", "6", "b7", "7"], steps: "All half steps", description: "Every pitch in the octave, useful for seeing the whole map." }
+    ];
+
+    const progressionStyles = [
+      { id: "classical", label: "Classical" },
+      { id: "jazz", label: "Jazz" },
+      { id: "pop", label: "Pop" },
+      { id: "blues", label: "Blues" }
+    ];
+
+    const progressionMoods = [
+      { id: "melancholic", label: "Melancholic" },
+      { id: "hopeful", label: "Hopeful" },
+      { id: "nostalgic", label: "Nostalgic" },
+      { id: "dreamy", label: "Dreamy" },
+      { id: "romantic", label: "Romantic" },
+      { id: "dark", label: "Dark" },
+      { id: "peaceful", label: "Peaceful" },
+      { id: "mysterious", label: "Mysterious" },
+      { id: "bittersweet", label: "Bittersweet" },
+      { id: "epic", label: "Epic" },
+      { id: "lonely", label: "Lonely" },
+      { id: "warm", label: "Warm" },
+      { id: "floating", label: "Floating" },
+      { id: "tense", label: "Tense" },
+      { id: "magical", label: "Magical" },
+      { id: "sadBeautiful", label: "Sad but Beautiful" },
+      { id: "reflective", label: "Reflective" },
+      { id: "triumphant", label: "Triumphant" },
+      { id: "ethereal", label: "Ethereal" },
+      { id: "liminal", label: "Liminal" }
+    ];
+
+    const styleProfiles = {
+      classical: {
+        starts: [0, 3, 5],
+        colors: [1, 3, 4, 5, 6],
+        cadences: [[4, 0], [6, 0], [1, 4]],
+        patterns: {
+          4: [[0, 3, 4, 0], [0, 5, 1, 4], [3, 0, 4, 0], [0, 1, 4, 0]],
+          5: [[0, 3, 4, 6, 0], [0, 5, 1, 4, 0], [3, 0, 1, 4, 0], [0, 1, 5, 4, 0]],
+          6: [[0, 3, 5, 1, 4, 0], [0, 1, 4, 6, 4, 0], [3, 0, 5, 1, 4, 0], [0, 5, 3, 1, 4, 0]]
+        }
+      },
+      jazz: {
+        starts: [1, 5, 0],
+        colors: [1, 2, 4, 5, 6],
+        cadences: [[1, 4], [4, 0], [5, 1]],
+        patterns: {
+          4: [[1, 4, 0, 5], [5, 1, 4, 0], [2, 5, 1, 4], [0, 5, 1, 4]],
+          5: [[1, 4, 0, 5, 0], [5, 1, 4, 0, 5], [2, 5, 1, 4, 0], [0, 5, 1, 4, 0]],
+          6: [[1, 4, 0, 5, 1, 4], [5, 1, 4, 0, 2, 5], [2, 5, 1, 4, 0, 5], [0, 5, 1, 4, 6, 1]]
+        }
+      },
+      pop: {
+        starts: [0, 5, 3],
+        colors: [0, 3, 4, 5],
+        cadences: [[4, 0], [3, 4], [5, 0]],
+        patterns: {
+          4: [[0, 4, 5, 3], [0, 5, 3, 4], [5, 3, 0, 4], [0, 3, 4, 5]],
+          5: [[0, 5, 3, 4, 0], [0, 4, 5, 3, 4], [5, 3, 0, 4, 0], [0, 3, 4, 5, 0]],
+          6: [[0, 4, 5, 3, 1, 4], [0, 5, 3, 4, 0, 4], [5, 3, 0, 4, 1, 4], [0, 3, 4, 5, 3, 0]]
+        }
+      },
+      blues: {
+        starts: [0, 3, 4],
+        colors: [0, 3, 4],
+        cadences: [[4, 3], [3, 0], [4, 0]],
+        patterns: {
+          4: [[0, 0, 3, 4], [0, 3, 0, 4], [0, 3, 4, 3], [3, 0, 4, 0]],
+          5: [[0, 0, 3, 4, 0], [0, 3, 0, 4, 3], [0, 3, 4, 3, 0], [3, 0, 4, 3, 0]],
+          6: [[0, 0, 3, 3, 4, 0], [0, 3, 0, 4, 3, 0], [0, 3, 4, 3, 0, 4], [3, 0, 4, 3, 0, 0]]
+        }
+      },
+      neoClassical: {
+        starts: [0, 5, 3],
+        colors: [5, 3, 1, 4],
+        cadences: [[4, 0], [3, 0], [1, 4]],
+        patterns: {
+          4: [[0, 5, 3, 4], [5, 3, 0, 4], [0, 1, 5, 4]],
+          5: [[0, 5, 3, 4, 0], [5, 3, 0, 1, 4], [0, 1, 5, 3, 4]],
+          6: [[0, 5, 3, 4, 1, 4], [5, 3, 0, 1, 4, 0], [0, 1, 5, 3, 4, 0]]
+        }
+      },
+      cinematicPiano: {
+        starts: [5, 0, 3],
+        colors: [2, 5, 3, 6],
+        cadences: [[3, 0], [4, 5], [1, 4]],
+        patterns: {
+          4: [[5, 3, 0, 4], [0, 2, 5, 4], [3, 4, 0, 5]],
+          5: [[5, 3, 0, 4, 0], [0, 2, 5, 4, 5], [3, 4, 0, 5, 0]],
+          6: [[5, 3, 0, 4, 2, 4], [0, 2, 5, 4, 0, 5], [3, 4, 0, 5, 1, 4]]
+        }
+      },
+      jazz: {
+        starts: [1, 2, 5],
+        colors: [1, 2, 4, 5, 6],
+        cadences: [[1, 4], [4, 0], [5, 0]],
+        patterns: {
+          4: [[1, 4, 0, 5], [2, 5, 1, 4], [5, 1, 4, 0]],
+          5: [[1, 4, 0, 5, 0], [2, 5, 1, 4, 0], [5, 1, 4, 6, 2]],
+          6: [[1, 4, 0, 5, 1, 4], [2, 5, 1, 4, 0, 5], [5, 1, 4, 6, 2, 4]]
+        }
+      },
+      jazzBallad: {
+        starts: [1, 2, 5],
+        colors: [1, 4, 5, 2, 6],
+        cadences: [[4, 0], [1, 4], [5, 0]],
+        patterns: {
+          4: [[1, 4, 0, 5], [2, 5, 1, 4], [5, 1, 4, 0]],
+          5: [[1, 4, 0, 5, 0], [2, 5, 1, 4, 0], [5, 1, 4, 6, 2]],
+          6: [[1, 4, 0, 5, 1, 4], [2, 5, 1, 4, 0, 5], [5, 1, 4, 6, 2, 4]]
+        }
+      },
+      loFiPiano: {
+        starts: [5, 1, 0],
+        colors: [1, 3, 5, 6],
+        cadences: [[3, 0], [5, 0], [1, 5]],
+        patterns: {
+          4: [[5, 3, 0, 4], [1, 5, 3, 0], [0, 5, 1, 3]],
+          5: [[5, 3, 0, 4, 0], [1, 5, 3, 0, 5], [0, 5, 1, 3, 0]],
+          6: [[5, 3, 0, 4, 1, 5], [1, 5, 3, 0, 4, 0], [0, 5, 1, 3, 5, 0]]
+        }
+      },
+      ambientPiano: {
+        starts: [0, 5, 3],
+        colors: [5, 3, 1, 6],
+        cadences: [[5, 0], [3, 0], [0, 0]],
+        patterns: {
+          4: [[0, 5, 3, 5], [5, 0, 3, 0], [0, 3, 5, 0]],
+          5: [[0, 5, 3, 5, 0], [5, 0, 3, 0, 5], [0, 3, 5, 1, 0]],
+          6: [[0, 5, 3, 5, 1, 0], [5, 0, 3, 0, 5, 0], [0, 3, 5, 1, 3, 0]]
+        }
+      },
+      romanticClassical: {
+        starts: [0, 5, 3],
+        colors: [5, 1, 3, 4],
+        cadences: [[1, 4], [4, 0], [3, 0]],
+        patterns: {
+          4: [[0, 5, 1, 4], [5, 3, 4, 0], [0, 3, 1, 4]],
+          5: [[0, 5, 1, 4, 0], [5, 3, 4, 1, 4], [0, 3, 1, 4, 0]],
+          6: [[0, 5, 1, 4, 3, 0], [5, 3, 4, 1, 4, 0], [0, 3, 1, 4, 5, 0]]
+        }
+      },
+      modernPopPiano: {
+        starts: [0, 5, 3],
+        colors: [5, 3, 4, 1],
+        cadences: [[4, 0], [3, 4], [5, 0]],
+        patterns: {
+          4: [[0, 4, 5, 3], [0, 5, 3, 4], [5, 3, 0, 4]],
+          5: [[0, 5, 3, 4, 0], [0, 4, 5, 3, 4], [5, 3, 0, 4, 0]],
+          6: [[0, 4, 5, 3, 1, 4], [0, 5, 3, 4, 0, 4], [5, 3, 0, 4, 1, 4]]
+        }
+      },
+      gospelPiano: {
+        starts: [0, 3, 5],
+        colors: [1, 3, 4, 5, 6],
+        cadences: [[1, 4], [4, 0], [5, 4]],
+        patterns: {
+          4: [[0, 3, 1, 4], [5, 1, 4, 0], [0, 6, 1, 4]],
+          5: [[0, 3, 1, 4, 0], [5, 1, 4, 0, 3], [0, 6, 1, 4, 0]],
+          6: [[0, 3, 1, 4, 5, 4], [5, 1, 4, 0, 3, 4], [0, 6, 1, 4, 3, 0]]
+        }
+      },
+      soulRnbPiano: {
+        starts: [5, 0, 3],
+        colors: [1, 3, 5, 6],
+        cadences: [[1, 4], [3, 0], [5, 0]],
+        patterns: {
+          4: [[0, 5, 3, 4], [5, 4, 0, 3], [0, 6, 3, 4]],
+          5: [[0, 5, 3, 4, 0], [5, 4, 0, 3, 4], [0, 6, 3, 4, 0]],
+          6: [[0, 5, 3, 4, 1, 4], [5, 4, 0, 3, 1, 4], [0, 6, 3, 4, 5, 0]]
+        }
+      },
+      minimalistPiano: {
+        starts: [0, 5],
+        colors: [0, 1, 3, 5],
+        cadences: [[5, 0], [3, 0], [0, 0]],
+        patterns: {
+          4: [[0, 5, 0, 3], [0, 1, 0, 5], [5, 0, 5, 3]],
+          5: [[0, 5, 0, 3, 0], [0, 1, 0, 5, 0], [5, 0, 5, 3, 0]],
+          6: [[0, 5, 0, 3, 0, 5], [0, 1, 0, 5, 0, 3], [5, 0, 5, 3, 0, 5]]
+        }
+      },
+      impressionist: {
+        starts: [0, 1, 3],
+        colors: [1, 3, 5, 6],
+        cadences: [[3, 0], [5, 0], [1, 5]],
+        patterns: {
+          4: [[0, 1, 3, 5], [3, 5, 1, 0], [1, 5, 0, 3]],
+          5: [[0, 1, 3, 5, 0], [3, 5, 1, 0, 5], [1, 5, 0, 3, 0]],
+          6: [[0, 1, 3, 5, 6, 3], [3, 5, 1, 0, 5, 0], [1, 5, 0, 3, 6, 0]]
+        }
+      },
+      darkClassical: {
+        starts: [5, 0, 6],
+        colors: [1, 2, 5, 6],
+        cadences: [[1, 4], [4, 0], [6, 4]],
+        patterns: {
+          4: [[5, 1, 4, 0], [0, 6, 1, 4], [6, 2, 5, 4]],
+          5: [[5, 1, 4, 0, 6], [0, 6, 1, 4, 0], [6, 2, 5, 4, 0]],
+          6: [[5, 1, 4, 0, 6, 4], [0, 6, 1, 4, 5, 0], [6, 2, 5, 4, 1, 4]]
+        }
+      },
+      videoGameOst: {
+        starts: [0, 5, 3],
+        colors: [2, 3, 4, 5, 6],
+        cadences: [[4, 0], [3, 0], [5, 4]],
+        patterns: {
+          4: [[0, 2, 3, 4], [5, 3, 0, 4], [0, 5, 6, 4]],
+          5: [[0, 2, 3, 4, 0], [5, 3, 0, 4, 5], [0, 5, 6, 4, 0]],
+          6: [[0, 2, 3, 4, 5, 4], [5, 3, 0, 4, 2, 4], [0, 5, 6, 4, 3, 0]]
+        }
+      },
+      filmTrailerPiano: {
+        starts: [5, 0, 6],
+        colors: [2, 4, 5, 6],
+        cadences: [[4, 0], [6, 4], [1, 4]],
+        patterns: {
+          4: [[5, 6, 3, 4], [0, 2, 5, 4], [6, 5, 3, 4]],
+          5: [[5, 6, 3, 4, 0], [0, 2, 5, 4, 0], [6, 5, 3, 4, 5]],
+          6: [[5, 6, 3, 4, 2, 4], [0, 2, 5, 4, 6, 4], [6, 5, 3, 4, 1, 4]]
+        }
+      },
+      pianoHouse: {
+        starts: [0, 5, 3],
+        colors: [3, 4, 5, 6],
+        cadences: [[4, 0], [5, 4], [3, 4]],
+        patterns: {
+          4: [[0, 5, 3, 4], [5, 3, 0, 4], [0, 6, 3, 4]],
+          5: [[0, 5, 3, 4, 0], [5, 3, 0, 4, 5], [0, 6, 3, 4, 0]],
+          6: [[0, 5, 3, 4, 5, 4], [5, 3, 0, 4, 6, 4], [0, 6, 3, 4, 0, 4]]
+        }
+      },
+      softAcousticSingerSongwriter: {
+        starts: [0, 5, 3],
+        colors: [3, 4, 5, 1],
+        cadences: [[4, 0], [3, 0], [5, 0]],
+        patterns: {
+          4: [[0, 5, 3, 4], [0, 3, 4, 5], [5, 3, 0, 4]],
+          5: [[0, 5, 3, 4, 0], [0, 3, 4, 5, 0], [5, 3, 0, 4, 0]],
+          6: [[0, 5, 3, 4, 1, 4], [0, 3, 4, 5, 3, 0], [5, 3, 0, 4, 5, 0]]
+        }
+      },
+      newAgePiano: {
+        starts: [0, 5, 3],
+        colors: [1, 3, 5, 6],
+        cadences: [[5, 0], [3, 0], [1, 0]],
+        patterns: {
+          4: [[0, 5, 1, 3], [5, 0, 3, 1], [0, 3, 5, 1]],
+          5: [[0, 5, 1, 3, 0], [5, 0, 3, 1, 5], [0, 3, 5, 1, 0]],
+          6: [[0, 5, 1, 3, 5, 0], [5, 0, 3, 1, 5, 0], [0, 3, 5, 1, 3, 0]]
+        }
+      },
+      bluesPiano: {
+        starts: [0, 3, 4],
+        colors: [3, 4, 5, 6],
+        cadences: [[4, 0], [3, 0], [5, 4]],
+        patterns: {
+          4: [[0, 3, 0, 4], [0, 5, 3, 4], [3, 4, 0, 3]],
+          5: [[0, 3, 0, 4, 0], [0, 5, 3, 4, 0], [3, 4, 0, 3, 4]],
+          6: [[0, 3, 0, 4, 3, 0], [0, 5, 3, 4, 5, 4], [3, 4, 0, 3, 5, 4]]
+        }
+      },
+      dramaticOrchestralPiano: {
+        starts: [5, 0, 6],
+        colors: [1, 2, 4, 5, 6],
+        cadences: [[4, 0], [1, 4], [6, 4]],
+        patterns: {
+          4: [[5, 6, 1, 4], [0, 5, 2, 4], [6, 3, 1, 4]],
+          5: [[5, 6, 1, 4, 0], [0, 5, 2, 4, 0], [6, 3, 1, 4, 5]],
+          6: [[5, 6, 1, 4, 2, 4], [0, 5, 2, 4, 6, 4], [6, 3, 1, 4, 5, 0]]
+        }
+      },
+      dreamyAnimePiano: {
+        starts: [5, 0, 3],
+        colors: [1, 2, 3, 5, 6],
+        cadences: [[3, 0], [4, 0], [5, 0]],
+        patterns: {
+          4: [[5, 3, 0, 4], [0, 2, 5, 3], [3, 5, 1, 4]],
+          5: [[5, 3, 0, 4, 0], [0, 2, 5, 3, 4], [3, 5, 1, 4, 0]],
+          6: [[5, 3, 0, 4, 1, 4], [0, 2, 5, 3, 4, 0], [3, 5, 1, 4, 5, 0]]
+        }
+      }
+    };
+
+    const moodProfiles = {
+      melancholic: { starts: [5, 1, 0], colors: [1, 2, 5, 6], cadences: [[5, 0], [1, 5], [2, 5]], tension: 0.58 },
+      hopeful: { starts: [0, 3, 5], colors: [3, 4, 5], cadences: [[4, 0], [3, 0], [5, 0]], tension: 0.2 },
+      nostalgic: { starts: [5, 0, 3], colors: [1, 3, 5], cadences: [[3, 0], [5, 0], [1, 4]], tension: 0.35 },
+      dreamy: { starts: [5, 3, 0], colors: [1, 3, 5, 6], cadences: [[3, 0], [5, 0], [1, 5]], tension: 0.25 },
+      romantic: { starts: [0, 5, 3], colors: [1, 3, 5, 6], cadences: [[1, 4], [3, 0], [4, 0]], tension: 0.32 },
+      dark: { starts: [5, 6, 0], colors: [1, 2, 5, 6], cadences: [[1, 4], [6, 4], [4, 0]], tension: 0.82 },
+      peaceful: { starts: [0, 5], colors: [1, 3, 5], cadences: [[5, 0], [3, 0], [0, 0]], tension: 0.12 },
+      mysterious: { starts: [1, 5, 6], colors: [1, 2, 5, 6], cadences: [[1, 5], [6, 5], [5, 0]], tension: 0.72 },
+      bittersweet: { starts: [5, 0, 3], colors: [1, 3, 5, 6], cadences: [[3, 0], [1, 4], [5, 0]], tension: 0.5 },
+      epic: { starts: [0, 5, 6], colors: [2, 3, 4, 5, 6], cadences: [[4, 0], [5, 4], [1, 4]], tension: 0.68 },
+      lonely: { starts: [5, 1, 0], colors: [1, 5, 6], cadences: [[5, 0], [1, 5], [0, 0]], tension: 0.38 },
+      warm: { starts: [0, 3, 5], colors: [3, 4, 5], cadences: [[3, 0], [4, 0], [5, 0]], tension: 0.18 },
+      floating: { starts: [0, 5, 3], colors: [1, 3, 5, 6], cadences: [[5, 0], [3, 0], [1, 0]], tension: 0.22 },
+      tense: { starts: [1, 6, 5], colors: [1, 2, 4, 6], cadences: [[1, 4], [6, 4], [4, 0]], tension: 0.9 },
+      magical: { starts: [3, 0, 5], colors: [1, 2, 3, 6], cadences: [[3, 0], [5, 0], [1, 5]], tension: 0.42 },
+      sadBeautiful: { starts: [5, 1, 0], colors: [1, 3, 5, 6], cadences: [[3, 0], [1, 4], [5, 0]], tension: 0.48 },
+      reflective: { starts: [0, 5, 1], colors: [1, 3, 5], cadences: [[5, 0], [3, 0], [1, 4]], tension: 0.3 },
+      triumphant: { starts: [0, 3, 4], colors: [3, 4, 5], cadences: [[4, 0], [5, 4], [3, 4]], tension: 0.36 },
+      ethereal: { starts: [0, 5, 3], colors: [1, 3, 5, 6], cadences: [[5, 0], [3, 0], [1, 0]], tension: 0.18 },
+      liminal: { starts: [1, 5, 0], colors: [1, 5, 6], cadences: [[5, 0], [1, 5], [6, 5]], tension: 0.55 }
+    };
+
+    const styleChordColors = {
+      classical: ["triad", "triad", "7", "dim7"],
+      jazz: ["m7", "7", "9", "maj7", "m9", "maj9", "m7b5", "7sus4", "m7sus2", "add9"],
+      pop: ["triad"],
+      blues: ["blues7", "7", "m7", "sus4"],
+      neoClassical: ["triad", "6", "add9", "sus4", "maj7", "m7"],
+      cinematicPiano: ["sus2", "sus4", "add9", "maj7", "m7", "7sus4"],
+      jazz: ["m7", "7", "maj7", "m9", "maj9", "m7b5", "7sus4", "add9"],
+      jazzBallad: ["m7", "maj7", "m9", "maj9", "7", "m7b5", "add9"],
+      loFiPiano: ["maj7", "m7", "add9", "m7sus2", "sus2", "maj9"],
+      ambientPiano: ["add9", "sus2", "sus4", "maj7", "m7", "triad"],
+      romanticClassical: ["maj7", "m7", "6", "add9", "sus4"],
+      modernPopPiano: ["add9", "sus2", "sus4", "6", "m7", "maj7"],
+      gospelPiano: ["7", "7sus4", "maj7", "m7", "6", "add9", "sus4"],
+      soulRnbPiano: ["maj7", "m7", "m9", "add9", "7", "6", "m7sus2"],
+      minimalistPiano: ["triad", "add9", "sus2", "6", "maj7"],
+      impressionist: ["maj7", "maj9", "add9", "sus2", "sus4", "m7"],
+      darkClassical: ["m7", "m7b5", "dim7", "sus2", "7", "7sus4"],
+      videoGameOst: ["add9", "sus2", "maj7", "m7", "sus4", "6"],
+      filmTrailerPiano: ["7sus4", "sus4", "add9", "m7", "m7b5", "7"],
+      pianoHouse: ["m7", "7", "add9", "sus2", "6", "maj7"],
+      softAcousticSingerSongwriter: ["add9", "sus2", "sus4", "6", "m7", "triad"],
+      newAgePiano: ["add9", "sus2", "maj7", "m7", "6", "triad"],
+      bluesPiano: ["7", "7sus4", "m7", "sus4", "add9", "6"],
+      dramaticOrchestralPiano: ["m7b5", "7sus4", "7", "sus4", "m7", "dim7"],
+      dreamyAnimePiano: ["maj7", "add9", "sus2", "m7", "maj9", "m7sus2"]
+    };
+
+    const moodChordColors = {
+      melancholic: ["m7", "m9", "add9", "m7sus2", "maj7"],
+      hopeful: ["add9", "maj7", "6", "sus2", "triad"],
+      nostalgic: ["maj7", "m7", "6", "add9", "sus2"],
+      dreamy: ["maj9", "add9", "sus2", "maj7", "m7sus2"],
+      romantic: ["maj7", "m7", "m9", "add9", "6"],
+      dark: ["m7", "m7b5", "dim7", "7", "7sus4"],
+      peaceful: ["add9", "sus2", "6", "maj7", "triad"],
+      mysterious: ["sus2", "sus4", "m7b5", "7sus4", "add9"],
+      bittersweet: ["maj7", "m7", "add9", "m9", "6"],
+      epic: ["7sus4", "sus4", "add9", "7", "maj7"],
+      lonely: ["m7", "m7sus2", "add9", "sus2", "triad"],
+      warm: ["6", "add9", "maj7", "m7", "triad"],
+      floating: ["add9", "sus2", "maj9", "maj7", "triad"],
+      tense: ["7", "7sus4", "m7b5", "dim7", "sus4"],
+      magical: ["maj9", "add9", "sus2", "maj7", "m7"],
+      sadBeautiful: ["m7", "m9", "maj7", "add9", "m7sus2"],
+      reflective: ["m7", "maj7", "add9", "6", "sus2"],
+      triumphant: ["maj7", "6", "add9", "7sus4", "triad"],
+      ethereal: ["maj9", "add9", "sus2", "maj7", "m7"],
+      liminal: ["sus2", "add9", "m7sus2", "m7", "maj7"]
+    };
+
+    const chords = [
+      { name: "Major", short: "Triad", intervals: [0, 4, 7], formula: ["1", "3", "5"], description: "Stable and bright." },
+      { name: "Minor", short: "Triad", intervals: [0, 3, 7], formula: ["1", "b3", "5"], description: "Stable with a darker color." },
+      { name: "Diminished", short: "Triad", intervals: [0, 3, 6], formula: ["1", "b3", "b5"], description: "Tense and compact." },
+      { name: "Augmented", short: "Triad", intervals: [0, 4, 8], formula: ["1", "3", "#5"], description: "Bright, tense, and floating." },
+      { name: "Sus2", short: "Suspended", intervals: [0, 2, 7], formula: ["1", "2", "5"], description: "Open sound with the third replaced by the second." },
+      { name: "Sus4", short: "Suspended", intervals: [0, 5, 7], formula: ["1", "4", "5"], description: "Open sound with the third replaced by the fourth." },
+      { name: "Sixth", short: "6", intervals: [0, 4, 7, 9], formula: ["1", "3", "5", "6"], description: "A major chord with a warm sixth added." },
+      { name: "Minor Sixth", short: "m6", intervals: [0, 3, 7, 9], formula: ["1", "b3", "5", "6"], description: "Minor with a smooth, classic color." },
+      { name: "Dominant Seventh", short: "7", intervals: [0, 4, 7, 10], formula: ["1", "3", "5", "b7"], description: "A major triad with tension that wants to resolve." },
+      { name: "Major Seventh", short: "maj7", intervals: [0, 4, 7, 11], formula: ["1", "3", "5", "7"], description: "Smooth, glossy, and common in jazz and soul." },
+      { name: "Minor Seventh", short: "m7", intervals: [0, 3, 7, 10], formula: ["1", "b3", "5", "b7"], description: "Relaxed minor sound used everywhere." },
+      { name: "Diminished Seventh", short: "dim7", intervals: [0, 3, 6, 9], formula: ["1", "b3", "b5", "bb7"], description: "Symmetrical, tense, and dramatic." },
+      { name: "Half-Diminished", short: "m7b5", intervals: [0, 3, 6, 10], formula: ["1", "b3", "b5", "b7"], description: "A minor seventh chord with a lowered fifth." },
+      { name: "Add Nine", short: "add9", intervals: [0, 4, 7, 14], formula: ["1", "3", "5", "9"], description: "Major with a clear, spacious ninth added." }
+    ];
+
+    const appVersion = "1.0.0";
+
+    function readStorage(key, fallback) {
+      try {
+        const value = localStorage.getItem(key);
+        return value === null ? fallback : value;
+      } catch {
+        return fallback;
+      }
+    }
+
+    function writeStorage(key, value) {
+      try {
+        localStorage.setItem(key, value);
+      } catch {
+        // The app still works if browser storage is unavailable.
+      }
+    }
+
+    function storedFavorites() {
+      try {
+        const value = JSON.parse(readStorage("pianoAtlasFavorites", "[]"));
+        return Array.isArray(value)
+          ? value.filter(favorite => favorite && favorite.mode && favorite.root && favorite.item)
+          : [];
+      } catch {
+        return [];
+      }
+    }
+
+    const state = {
+      mode: "scales",
+      root: "C",
+      item: "Major",
+      inversion: 0,
+      scaleTwoOctaves: false,
+      progressionStyle: "pop",
+      progressionMood: "hopeful",
+      progressionSeed: 0,
+      progressionSet: null,
+      favorites: storedFavorites()
+    };
+
+    const rootGrid = document.getElementById("rootGrid");
+    const library = document.getElementById("library");
+    const libraryLabelText = document.getElementById("libraryLabelText");
+    const modeKicker = document.getElementById("modeKicker");
+    const headline = document.getElementById("headline");
+    const description = document.getElementById("description");
+    const notesEl = document.getElementById("notes");
+    const scaleOptionsEl = document.getElementById("scaleOptions");
+    const inversionsEl = document.getElementById("inversions");
+    const formulaEl = document.getElementById("formula");
+    const detailsEl = document.getElementById("details");
+    const keyboard = document.getElementById("keyboard");
+    const scaleChordsPanel = document.getElementById("scaleChordsPanel");
+    const scaleChords = document.getElementById("scaleChords");
+    const practice = document.getElementById("practice");
+    const practiceTitle = document.getElementById("practiceTitle");
+    const noteCount = document.getElementById("noteCount");
+    const themeToggle = document.getElementById("themeToggle");
+    const fullscreenToggle = document.getElementById("fullscreenToggle");
+    const favoriteToggle = document.getElementById("favoriteToggle");
+    const helpToggle = document.getElementById("helpToggle");
+    const aboutModal = document.getElementById("aboutModal");
+    const closeAbout = document.getElementById("closeAbout");
+    const favoritesList = document.getElementById("favoritesList");
+    const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+    const versionBadge = document.getElementById("versionBadge");
+    const aboutVersion = document.getElementById("aboutVersion");
+
+    function storedTheme() {
+      try {
+        return localStorage.getItem("pianoAtlasTheme");
+      } catch {
+        return null;
+      }
+    }
+
+    function saveTheme(theme) {
+      try {
+        localStorage.setItem("pianoAtlasTheme", theme);
+      } catch {
+        // The app still works if browser storage is unavailable.
+      }
+    }
+
+    function applyTheme(theme) {
+      const isDark = theme === "dark";
+      document.body.classList.toggle("dark-mode", isDark);
+      if (themeColorMeta) themeColorMeta.setAttribute("content", isDark ? "#242424" : "#f4f2ea");
+      themeToggle.setAttribute("aria-label", isDark ? "Switch to light mode" : "Switch to dark mode");
+      themeToggle.querySelector(".theme-icon").textContent = isDark ? "☀" : "☾";
+      themeToggle.querySelector(".theme-text").textContent = isDark ? "Light mode" : "Dark mode";
+    }
+
+    let hostFullscreen = false;
+
+    function setFullscreenState(isFullscreen) {
+      fullscreenToggle.classList.toggle("is-fullscreen", isFullscreen);
+      fullscreenToggle.setAttribute("aria-label", isFullscreen ? "Exit fullscreen" : "Enter fullscreen");
+    }
+
+    function updateFullscreenToggle() {
+      setFullscreenState(hostFullscreen || Boolean(document.fullscreenElement));
+    }
+
+    async function toggleFullscreen() {
+      try {
+        if (window.chrome?.webview) {
+          window.chrome.webview.postMessage({ type: "toggle-fullscreen" });
+          return;
+        }
+
+        if (document.fullscreenElement) {
+          await document.exitFullscreen();
+        } else {
+          await document.documentElement.requestFullscreen();
+        }
+      } catch (error) {
+        console.warn("Fullscreen could not be changed", error);
+      } finally {
+        updateFullscreenToggle();
+      }
+    }
+
+    if (window.chrome?.webview) {
+      window.chrome.webview.addEventListener("message", event => {
+        if (event.data?.type !== "fullscreen-state") return;
+        hostFullscreen = Boolean(event.data.isFullscreen);
+        setFullscreenState(hostFullscreen);
+      });
+    }
+
+    versionBadge.textContent = `v${appVersion}`;
+    aboutVersion.textContent = appVersion;
+    applyTheme(storedTheme() || "light");
+    updateFullscreenToggle();
+
+    function noteName(root, semitone) {
+      const names = preferFlats.has(root) ? chromaticFlat : chromaticSharp;
+      return names[(midiByName[root] + semitone) % 12];
+    }
+
+    function scaleDegreeName(item, degreeIndex) {
+      const scaleIntervals = item.intervals.filter(interval => interval < 12);
+      if (!scaleIntervals.length) return state.root;
+      const normalizedIndex = ((degreeIndex % scaleIntervals.length) + scaleIntervals.length) % scaleIntervals.length;
+      const octave = Math.floor(degreeIndex / scaleIntervals.length) * 12;
+      const formulaToken = item.formula[normalizedIndex] || "1";
+      return spellNoteFromFormula(state.root, formulaToken, scaleIntervals[normalizedIndex] + octave);
+    }
+
+    function spellNoteFromFormula(root, formulaToken, semitone) {
+      const letters = ["C", "D", "E", "F", "G", "A", "B"];
+      const naturalPitch = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };
+      const rootLetter = root[0];
+      const degreeMatch = formulaToken.match(/\d+/);
+      if (!degreeMatch) return noteName(root, semitone);
+
+      const degree = Number(degreeMatch[0]);
+      const letter = letters[(letters.indexOf(rootLetter) + degree - 1) % letters.length];
+      const desiredPitch = (midiByName[root] + semitone) % 12;
+      let diff = (desiredPitch - naturalPitch[letter] + 12) % 12;
+      if (diff > 6) diff -= 12;
+
+      const accidentals = {
+        "-2": "bb",
+        "-1": "b",
+        "0": "",
+        "1": "#",
+        "2": "##"
+      };
+
+      return `${letter}${accidentals[String(diff)] ?? ""}`;
+    }
+
+    function simpleProgressionCopy(copy) {
+      return String(copy || "").replace(/\s*\([^)]*\)/g, "").replace(/\s+-\s+/g, " - ").trim();
+    }
+
+    function currentCollection() {
+      if (state.mode === "circle") return circleKeys.map(({ key, minor, signature }) => ({ name: key, short: minor, description: signature }));
+      return state.mode === "scales" ? scales : chords;
+    }
+
+    function currentItem() {
+      if (state.mode === "circle") return scales[0];
+      return currentCollection().find(item => item.name === state.item) || currentCollection()[0];
+    }
+
+    function modeLabel(mode) {
+      return {
+        scales: "Scale",
+        chords: "Chord",
+        arpeggios: "Arpeggio",
+        circle: "Circle",
+        progressions: "Progression"
+      }[mode] || "Item";
+    }
+
+    function favoriteId(favorite) {
+      if (favorite.mode === "progressions") {
+        return [
+          "progressions",
+          favorite.root,
+          favorite.item,
+          favorite.progressionStyle,
+          favorite.progressionTitle,
+          simpleProgressionCopy(favorite.progressionCopy)
+        ].join("|");
+      }
+      return `${favorite.mode}|${favorite.root}|${favorite.item}`;
+    }
+
+    function currentFavorite() {
+      const item = currentItem();
+      return {
+        mode: state.mode,
+        root: state.root,
+        item: state.mode === "circle" ? "Circle" : item.name
+      };
+    }
+
+    function favoriteTitle(favorite) {
+      if (favorite.mode === "progressions") {
+        return `${favorite.root} ${String(favorite.item || "").toLowerCase()}: ${simpleProgressionCopy(favorite.progressionCopy) || favorite.progressionTitle}`;
+      }
+
+      if (favorite.mode === "circle") {
+        const circleKey = circleKeys.find(item => item.key === favorite.root) || circleKeys[0];
+        return `${circleKey.key} major ↔ ${circleKey.minor.replace("m", " minor")}`;
+      }
+
+      const itemName = String(favorite.item || "").toLowerCase();
+      if (favorite.mode === "arpeggios") return `${favorite.root} ${itemName} arpeggio`;
+      return `${favorite.root} ${itemName}`;
+    }
+
+    function saveFavorites() {
+      writeStorage("pianoAtlasFavorites", JSON.stringify(state.favorites));
+    }
+
+    function isCurrentFavorite() {
+      const id = favoriteId(currentFavorite());
+      return state.favorites.some(favorite => favoriteId(favorite) === id);
+    }
+
+    function updateFavoriteToggle() {
+      const active = isCurrentFavorite();
+      favoriteToggle.classList.toggle("favorite-on", active);
+      favoriteToggle.setAttribute("aria-label", active ? "Remove current item from favorites" : "Add current item to favorites");
+      favoriteToggle.querySelector(".button-icon").textContent = active ? "★" : "☆";
+      favoriteToggle.querySelector(".button-text").textContent = active ? "Saved" : "Favorite";
+    }
+
+    function renderFavorites() {
+      const folders = [
+        ["scales", "Scales"],
+        ["chords", "Chords"],
+        ["arpeggios", "Arpeggios"],
+        ["circle", "Circle"],
+        ["progressions", "Chord progressions"]
+      ];
+
+      favoritesList.innerHTML = folders.map(([mode, label]) => {
+        const items = state.favorites
+          .map((favorite, index) => ({ favorite, index }))
+          .filter(({ favorite }) => favorite.mode === mode);
+        const content = items.length
+          ? items.map(({ favorite, index }) => `
+              <button type="button" data-favorite-index="${index}">
+                <strong>${favoriteTitle(favorite)}</strong>
+                <small>${modeLabel(favorite.mode)}</small>
+              </button>
+            `).join("")
+          : `<p class="favorites-empty">No saved ${label.toLowerCase()}.</p>`;
+        return `
+          <div class="favorite-folder">
+            <div class="favorite-folder-title">
+              <span>${label}</span>
+            </div>
+            <div class="favorite-folder-list">${content}</div>
+          </div>
+        `;
+      }).join("");
+
+      favoritesList.querySelectorAll("button").forEach(button => {
+        button.addEventListener("click", () => {
+          const favorite = state.favorites[Number(button.dataset.favoriteIndex)];
+          if (!favorite) return;
+          loadFavorite(favorite);
+        });
+      });
+    }
+
+    function toggleCurrentFavorite() {
+      const favorite = currentFavorite();
+      const id = favoriteId(favorite);
+      const existingIndex = state.favorites.findIndex(saved => favoriteId(saved) === id);
+      if (existingIndex >= 0) {
+        state.favorites.splice(existingIndex, 1);
+      } else {
+        state.favorites.unshift(favorite);
+      }
+      saveFavorites();
+      renderFavorites();
+      updateFavoriteToggle();
+    }
+
+    function progressionFavoriteFromCard(item, card) {
+      return {
+        mode: "progressions",
+        root: state.root,
+        item: item.name,
+        progressionStyle: state.progressionStyle,
+        progressionTitle: card?.[0] || "Chord progression",
+        progressionCopy: simpleProgressionCopy(card?.[1]),
+        chords: card?.[2] || []
+      };
+    }
+
+    function isProgressionFavorite(item, card) {
+      const id = favoriteId(progressionFavoriteFromCard(item, card));
+      return state.favorites.some(favorite => favoriteId(favorite) === id);
+    }
+
+    function toggleProgressionFavorite(item, progressionIndex) {
+      const card = scaleProgressionCards(item)[progressionIndex];
+      if (!card) return;
+      const favorite = progressionFavoriteFromCard(item, card);
+      const id = favoriteId(favorite);
+      const existingIndex = state.favorites.findIndex(saved => favoriteId(saved) === id);
+      if (existingIndex >= 0) {
+        state.favorites.splice(existingIndex, 1);
+      } else {
+        state.favorites.unshift(favorite);
+      }
+      saveFavorites();
+      renderFavorites();
+      renderPractice(item);
+    }
+
+    function syncModeButtons() {
+      document.getElementById("scaleMode").classList.toggle("active", state.mode === "scales");
+      document.getElementById("chordMode").classList.toggle("active", state.mode === "chords");
+      document.getElementById("arpMode").classList.toggle("active", state.mode === "arpeggios");
+      document.getElementById("circleMode").classList.toggle("active", state.mode === "circle");
+    }
+
+    function loadFavorite(favorite) {
+      if (favorite.mode === "progressions") {
+        state.mode = "scales";
+        state.root = favorite.root;
+        state.item = favorite.item || "Major";
+        state.progressionStyle = favorite.progressionStyle || state.progressionStyle;
+        state.progressionSeed = 0;
+        state.progressionSet = {
+          context: progressionContext(currentCollection().find(item => item.name === state.item) || scales[0]),
+          cards: [[favorite.progressionTitle || "Saved progression", simpleProgressionCopy(favorite.progressionCopy) || "", favorite.chords || []]]
+        };
+        state.inversion = 0;
+        state.scaleTwoOctaves = false;
+        syncModeButtons();
+        render();
+        return;
+      }
+
+      state.mode = favorite.mode;
+      state.root = favorite.root;
+      state.item = favorite.mode === "circle" ? "Major" : favorite.item;
+      state.inversion = 0;
+      state.scaleTwoOctaves = false;
+      state.progressionSeed = 0;
+      state.progressionSet = null;
+      syncModeButtons();
+      render();
+    }
+
+    function patternIntervals(item) {
+      if (state.mode === "scales") return scalePatternIntervals(item);
+      if (state.mode === "circle") return [...scales[0].intervals, 12];
+      if (state.mode === "arpeggios") return arpeggioIntervals(item);
+      return chordInversionIntervals(item);
+    }
+
+    function scalePatternIntervals(item) {
+      if (!state.scaleTwoOctaves) return [...item.intervals, 12];
+      return [
+        ...item.intervals,
+        12,
+        ...item.intervals.filter(interval => interval !== 0).map(interval => interval + 12),
+        24
+      ];
+    }
+
+    function chordInversionIntervals(item) {
+      const tones = item.intervals.slice().sort((a, b) => a - b);
+      const inversion = Math.min(state.inversion, tones.length - 1);
+      const inverted = [
+        ...tones.slice(inversion),
+        ...tones.slice(0, inversion).map(interval => interval + 12)
+      ];
+      return inverted.sort((a, b) => a - b);
+    }
+
+    function chordInversionFormula(item) {
+      const formula = item.formula.slice();
+      const inversion = Math.min(state.inversion, formula.length - 1);
+      return [
+        ...formula.slice(inversion),
+        ...formula.slice(0, inversion)
+      ];
+    }
+
+    function spellingFormulaForPattern(item) {
+      if (state.mode === "scales" || state.mode === "circle") {
+        if (state.scaleTwoOctaves && state.mode === "scales") {
+          return [
+            ...item.formula,
+            "8",
+            ...item.formula.slice(1),
+            "15"
+          ];
+        }
+        return [...item.formula, "8"];
+      }
+
+      if (state.mode === "arpeggios") {
+        const chordToneFormulas = item.formula.filter((_, index) => item.intervals[index] < 12);
+        return [
+          ...chordToneFormulas,
+          "1",
+          ...chordToneFormulas.slice(1),
+          "1"
+        ];
+      }
+
+      return chordInversionFormula(item);
+    }
+
+    function arpeggioIntervals(item) {
+      const chordTones = item.intervals.filter(interval => interval < 12);
+      return [
+        ...chordTones,
+        12,
+        ...chordTones.filter(interval => interval !== 0).map(interval => interval + 12),
+        24
+      ];
+    }
+
+    function arpeggioFingering(item) {
+      const toneCount = item.intervals.filter(interval => interval < 12).length;
+      if (toneCount <= 3) return ["1", "2", "3", "1", "2", "3", "5"];
+      return ["1", "2", "3", "4", "1", "2", "3", "4", "5"];
+    }
+
+    function arpeggioLeftFingering(item) {
+      const toneCount = item.intervals.filter(interval => interval < 12).length;
+      if (toneCount <= 3) return ["5", "3", "2", "1", "3", "2", "1"];
+      return ["5", "4", "3", "2", "1", "4", "3", "2", "1"];
+    }
+
+    function scaleFingering(item) {
+      if (state.scaleTwoOctaves) return scaleTwoOctaveFingering(item, "RH");
+
+      const sevenNotePattern = {
+        C: ["1", "2", "3", "1", "2", "3", "4", "5"],
+        Db: ["2", "3", "1", "2", "3", "4", "1", "2"],
+        D: ["1", "2", "3", "1", "2", "3", "4", "5"],
+        Eb: ["2", "1", "2", "3", "4", "1", "2", "3"],
+        E: ["1", "2", "3", "1", "2", "3", "4", "5"],
+        F: ["1", "2", "3", "4", "1", "2", "3", "4"],
+        Gb: ["2", "3", "4", "1", "2", "3", "1", "2"],
+        G: ["1", "2", "3", "1", "2", "3", "4", "5"],
+        Ab: ["3", "4", "1", "2", "3", "1", "2", "3"],
+        A: ["1", "2", "3", "1", "2", "3", "4", "5"],
+        Bb: ["2", "1", "2", "3", "1", "2", "3", "4"],
+        B: ["1", "2", "3", "1", "2", "3", "4", "5"]
+      };
+
+      if (item.name === "Major Pentatonic" || item.name === "Minor Pentatonic") {
+        return ["1", "2", "3", "1", "2", "5"];
+      }
+
+      if (item.name === "Blues") {
+        return ["1", "2", "3", "1", "2", "3", "5"];
+      }
+
+      if (item.name === "Chromatic") {
+        return ["1", "3", "1", "3", "1", "2", "3", "1", "3", "1", "3", "1", "2"];
+      }
+
+      return sevenNotePattern[state.root] || sevenNotePattern.C;
+    }
+
+    function scaleLeftFingering(item) {
+      if (state.scaleTwoOctaves) return scaleTwoOctaveFingering(item, "LH");
+
+      const sevenNotePattern = {
+        C: ["5", "4", "3", "2", "1", "3", "2", "1"],
+        Db: ["3", "2", "1", "4", "3", "2", "1", "3"],
+        D: ["5", "4", "3", "2", "1", "3", "2", "1"],
+        Eb: ["3", "2", "1", "4", "3", "2", "1", "3"],
+        E: ["5", "4", "3", "2", "1", "3", "2", "1"],
+        F: ["5", "4", "3", "2", "1", "3", "2", "1"],
+        Gb: ["4", "3", "2", "1", "3", "2", "1", "2"],
+        G: ["5", "4", "3", "2", "1", "3", "2", "1"],
+        Ab: ["3", "2", "1", "4", "3", "2", "1", "3"],
+        A: ["5", "4", "3", "2", "1", "3", "2", "1"],
+        Bb: ["3", "2", "1", "4", "3", "2", "1", "3"],
+        B: ["4", "3", "2", "1", "4", "3", "2", "1"]
+      };
+
+      if (item.name === "Major Pentatonic" || item.name === "Minor Pentatonic") {
+        return ["5", "4", "3", "2", "1", "1"];
+      }
+
+      if (item.name === "Blues") {
+        return ["5", "4", "3", "2", "1", "3", "1"];
+      }
+
+      if (item.name === "Chromatic") {
+        return ["1", "3", "1", "3", "2", "1", "3", "1", "3", "1", "3", "2", "1"];
+      }
+
+      return sevenNotePattern[state.root] || sevenNotePattern.C;
+    }
+
+    function scaleTwoOctaveFingering(item, hand) {
+      const rightSeven = {
+        C: ["1", "2", "3", "1", "2", "3", "4", "1", "2", "3", "1", "2", "3", "4", "5"],
+        Db: ["2", "3", "1", "2", "3", "4", "1", "2", "3", "1", "2", "3", "4", "1", "2"],
+        D: ["1", "2", "3", "1", "2", "3", "4", "1", "2", "3", "1", "2", "3", "4", "5"],
+        Eb: ["2", "1", "2", "3", "4", "1", "2", "3", "1", "2", "3", "4", "1", "2", "3"],
+        E: ["1", "2", "3", "1", "2", "3", "4", "1", "2", "3", "1", "2", "3", "4", "5"],
+        F: ["1", "2", "3", "4", "1", "2", "3", "1", "2", "3", "4", "1", "2", "3", "4"],
+        Gb: ["2", "3", "4", "1", "2", "3", "1", "2", "3", "4", "1", "2", "3", "1", "2"],
+        G: ["1", "2", "3", "1", "2", "3", "4", "1", "2", "3", "1", "2", "3", "4", "5"],
+        Ab: ["3", "4", "1", "2", "3", "1", "2", "3", "4", "1", "2", "3", "1", "2", "3"],
+        A: ["1", "2", "3", "1", "2", "3", "4", "1", "2", "3", "1", "2", "3", "4", "5"],
+        Bb: ["2", "1", "2", "3", "1", "2", "3", "4", "1", "2", "3", "1", "2", "3", "4"],
+        B: ["1", "2", "3", "1", "2", "3", "4", "1", "2", "3", "1", "2", "3", "4", "5"]
+      };
+
+      const leftSeven = {
+        C: ["5", "4", "3", "2", "1", "3", "2", "1", "4", "3", "2", "1", "3", "2", "1"],
+        Db: ["3", "2", "1", "4", "3", "2", "1", "3", "2", "1", "4", "3", "2", "1", "3"],
+        D: ["5", "4", "3", "2", "1", "3", "2", "1", "4", "3", "2", "1", "3", "2", "1"],
+        Eb: ["3", "2", "1", "4", "3", "2", "1", "3", "2", "1", "4", "3", "2", "1", "3"],
+        E: ["5", "4", "3", "2", "1", "3", "2", "1", "4", "3", "2", "1", "3", "2", "1"],
+        F: ["5", "4", "3", "2", "1", "3", "2", "1", "4", "3", "2", "1", "3", "2", "1"],
+        Gb: ["4", "3", "2", "1", "3", "2", "1", "4", "3", "2", "1", "3", "2", "1", "2"],
+        G: ["5", "4", "3", "2", "1", "3", "2", "1", "4", "3", "2", "1", "3", "2", "1"],
+        Ab: ["3", "2", "1", "4", "3", "2", "1", "3", "2", "1", "4", "3", "2", "1", "3"],
+        A: ["5", "4", "3", "2", "1", "3", "2", "1", "4", "3", "2", "1", "3", "2", "1"],
+        Bb: ["3", "2", "1", "4", "3", "2", "1", "3", "2", "1", "4", "3", "2", "1", "3"],
+        B: ["4", "3", "2", "1", "4", "3", "2", "1", "4", "3", "2", "1", "3", "2", "1"]
+      };
+
+      if (item.intervals.length === 7) {
+        return hand === "LH"
+          ? leftSeven[state.root] || leftSeven.C
+          : rightSeven[state.root] || rightSeven.C;
+      }
+
+      const fallback = hand === "LH"
+        ? ["5", "4", "3", "2", "1", "3", "2", "1"]
+        : ["1", "2", "3", "1", "2", "3", "4", "5"];
+      return scalePatternIntervals(item).map((_, index) => fallback[index % fallback.length]);
+    }
+
+    function chordFingering(item) {
+      if (item.intervals.length === 3) {
+        if (state.inversion === 1) return ["1", "2", "5"];
+        return ["1", "3", "5"];
+      }
+      if (item.name === "Add Nine") return ["1", "2", "3", "5"];
+      return ["1", "2", "3", "5"];
+    }
+
+    function chordLeftFingering(item) {
+      if (item.intervals.length === 3) {
+        if (state.inversion === 2) return ["5", "2", "1"];
+        return ["5", "3", "1"];
+      }
+      return ["5", "3", "2", "1"];
+    }
+
+    function fingeringForPattern(item, hand = "RH") {
+      if (state.mode === "scales") return hand === "LH" ? scaleLeftFingering(item) : scaleFingering(item);
+      if (state.mode === "arpeggios") return hand === "LH" ? arpeggioLeftFingering(item) : arpeggioFingering(item);
+      return hand === "LH" ? chordLeftFingering(item) : chordFingering(item);
+    }
+
+    function patternRootMidi() {
+      const rootPitch = midiByName[state.root];
+      if (state.mode === "scales" && state.scaleTwoOctaves) return 48 + rootPitch;
+      return (state.mode === "arpeggios" || state.mode === "chords" ? 48 : 60) + rootPitch;
+    }
+
+    function notesFor(item) {
+      const formulas = spellingFormulaForPattern(item);
+      return patternIntervals(item).map((interval, index) => {
+        return spellNoteFromFormula(state.root, formulas[index] || "1", interval);
+      });
+    }
+
+    function intervalsMatch(actual, expected) {
+      return actual.length === expected.length && actual.every((value, index) => value === expected[index]);
+    }
+
+    function chordNameFromTones(rootInterval, toneIntervals, chordRootName = "") {
+      const chordRoot = chordRootName || noteName(state.root, rootInterval);
+      const normalized = toneIntervals
+        .map(interval => ((interval - rootInterval) % 12 + 12) % 12)
+        .sort((a, b) => a - b);
+
+      if (intervalsMatch(normalized, [0, 4, 7])) return chordRoot;
+      if (intervalsMatch(normalized, [0, 3, 7])) return `${chordRoot}m`;
+      if (intervalsMatch(normalized, [0, 3, 6])) return `${chordRoot}dim`;
+      if (intervalsMatch(normalized, [0, 4, 8])) return `${chordRoot}aug`;
+      if (intervalsMatch(normalized, [0, 2, 7])) return `${chordRoot}sus2`;
+      if (intervalsMatch(normalized, [0, 5, 7])) return `${chordRoot}sus4`;
+
+      return chordRoot;
+    }
+
+    function chordFromScaleDegree(item, degree) {
+      const context = chordToneContext(item, degree);
+      if (context) return triadLabelFromContext(context);
+
+      const scaleIntervals = item.intervals.filter(interval => interval < 12);
+      const toneCount = scaleIntervals.length;
+      const chordSteps = [degree, degree + 2, degree + 4];
+      const toneIntervals = chordSteps.map(step => {
+        const octave = Math.floor(step / toneCount) * 12;
+        return scaleIntervals[step % toneCount] + octave;
+      });
+      return chordNameFromTones(toneIntervals[0], toneIntervals, scaleDegreeName(item, normalizeProgressionDegree(degree, item)));
+    }
+
+    function scaleChordQuality(chordName) {
+      const name = String(chordName || "").toLowerCase();
+      if (name.includes("dim")) return "diminished";
+      if (name.includes("aug")) return "augmented";
+      if (name.includes("sus")) return "suspended";
+      if (name.endsWith("m")) return "minor";
+      return "major";
+    }
+
+    function scaleChordInfo(item, degree) {
+      const context = chordToneContext(item, degree);
+      if (context) {
+        let chordRootMidi = 48 + midiByName[state.root] + context.rootInterval;
+        while (chordRootMidi > 59) chordRootMidi -= 12;
+        while (chordRootMidi < 48) chordRootMidi += 12;
+        return {
+          label: triadLabelFromContext(context),
+          midis: chordRelativeIntervals(context, "triad")
+            .map(interval => chordRootMidi + interval)
+            .filter(midi => midi >= 21 && midi <= 108)
+        };
+      }
+
+      const scaleIntervals = item.intervals.filter(interval => interval < 12);
+      if (!scaleIntervals.length) {
+        return {
+          label: state.root,
+          midis: [60 + midiByName[state.root]]
+        };
+      }
+
+      const toneCount = scaleIntervals.length;
+      const rootDegree = normalizeProgressionDegree(degree, item);
+      const chordSteps = [rootDegree, rootDegree + 2, rootDegree + 4];
+      const toneIntervals = chordSteps.map(step => {
+        const octave = Math.floor(step / toneCount) * 12;
+        return scaleIntervals[step % toneCount] + octave;
+      });
+      let chordRootMidi = 48 + midiByName[state.root] + toneIntervals[0];
+      while (chordRootMidi > 59) chordRootMidi -= 12;
+      while (chordRootMidi < 48) chordRootMidi += 12;
+      return {
+        label: chordNameFromTones(toneIntervals[0], toneIntervals, scaleDegreeName(item, rootDegree)),
+        midis: uniqueSorted(toneIntervals.map(interval => chordRootMidi + interval - toneIntervals[0]))
+          .filter(midi => midi >= 21 && midi <= 108)
+      };
+    }
+
+    function renderScaleChords(item) {
+      if (state.mode !== "scales") {
+        scaleChordsPanel.hidden = true;
+        scaleChords.innerHTML = "";
+        return;
+      }
+
+      scaleChordsPanel.hidden = false;
+      scaleChords.innerHTML = Array.from({ length: 7 }, (_, degree) => {
+        const chord = scaleChordInfo(item, degree);
+        return `
+          <button class="scale-chord-card" type="button" data-degree="${degree}" aria-label="Play chord ${degree + 1}, ${chord.label}">
+            <span>${degree + 1}</span>
+            <strong title="${chord.label}">${chord.label}</strong>
+            <small>${scaleChordQuality(chord.label)}</small>
+          </button>
+        `;
+      }).join("");
+
+      scaleChords.querySelectorAll(".scale-chord-card").forEach(button => {
+        button.addEventListener("click", () => {
+          playScaleChordDegree(item, Number(button.dataset.degree), button);
+        });
+      });
+    }
+
+    function chordToneContext(item, degree) {
+      const scaleIntervals = item.intervals.filter(interval => interval < 12);
+      if (scaleIntervals.length !== 7) return null;
+      const rootIndex = normalizeProgressionDegree(degree, item);
+      const rootInterval = scaleIntervals[rootIndex];
+      const toneAt = step => {
+        const rawIndex = rootIndex + step;
+        const octave = Math.floor(rawIndex / scaleIntervals.length) * 12;
+        return scaleIntervals[rawIndex % scaleIntervals.length] + octave - rootInterval;
+      };
+      const third = ((toneAt(2) % 12) + 12) % 12;
+      const fifth = ((toneAt(4) % 12) + 12) % 12;
+      const seventh = ((toneAt(6) % 12) + 12) % 12;
+      const ninth = ((toneAt(8) % 12) + 12) % 12;
+      const second = ((toneAt(1) % 12) + 12) % 12;
+      const fourth = ((toneAt(3) % 12) + 12) % 12;
+      const sixth = ((toneAt(5) % 12) + 12) % 12;
+      const root = scaleDegreeName(item, rootIndex);
+      const tones = {
+        root: 0,
+        second: toneAt(1),
+        third: toneAt(2),
+        fourth: toneAt(3),
+        fifth: toneAt(4),
+        sixth: toneAt(5),
+        seventh: toneAt(6),
+        ninth: toneAt(8)
+      };
+
+      let quality = "other";
+      if (third === 4 && fifth === 7) quality = "major";
+      if (third === 3 && fifth === 7) quality = "minor";
+      if (third === 3 && fifth === 6) quality = "diminished";
+      if (third === 4 && fifth === 8) quality = "augmented";
+
+      return { root, rootInterval, quality, third, fifth, seventh, ninth, second, fourth, sixth, tones };
+    }
+
+    function triadLabelFromContext(context) {
+      if (context.quality === "major") return context.root;
+      if (context.quality === "minor") return `${context.root}m`;
+      if (context.quality === "diminished") return `${context.root}dim`;
+      if (context.quality === "augmented") return `${context.root}aug`;
+      return context.root;
+    }
+
+    function seventhLabelFromContext(context) {
+      if (context.quality === "major" && context.seventh === 11) return `${context.root}maj7`;
+      if (context.quality === "major" && context.seventh === 10) return `${context.root}7`;
+      if (context.quality === "minor" && context.seventh === 10) return `${context.root}m7`;
+      if (context.quality === "minor" && context.seventh === 11) return `${context.root}m(maj7)`;
+      if (context.quality === "diminished" && context.seventh === 10) return `${context.root}m7b5`;
+      if (context.quality === "diminished" && context.seventh === 9) return `${context.root}dim7`;
+      return triadLabelFromContext(context);
+    }
+
+    function addNineLabel(base, context) {
+      if (context.ninth === 2) return `${base}add9`;
+      return base;
+    }
+
+    function coloredChordLabel(item, degree, color) {
+      const context = chordToneContext(item, degree);
+      if (!context) return chordFromScaleDegree(item, degree);
+      const triad = triadLabelFromContext(context);
+
+      if (color === "triad") return triad;
+      if (color === "maj7") {
+        if (context.quality === "major" && context.seventh === 11) return `${context.root}maj7`;
+        return seventhLabelFromContext(context);
+      }
+      if (color === "maj9") {
+        if (context.quality === "major" && context.seventh === 11 && context.ninth === 2) return `${context.root}maj9`;
+        return addNineLabel(seventhLabelFromContext(context), context);
+      }
+      if (color === "m7") return seventhLabelFromContext(context);
+      if (color === "m9") {
+        if (context.quality === "minor" && context.seventh === 10 && context.ninth === 2) return `${context.root}m9`;
+        if (context.quality === "major" && context.seventh === 10 && context.ninth === 2) return `${context.root}9`;
+        return addNineLabel(seventhLabelFromContext(context), context);
+      }
+      if (color === "9") return `${context.root}9`;
+      if (color === "blues7") return `${context.root}7`;
+      if (color === "7") return seventhLabelFromContext(context);
+      if (color === "m7b5") {
+        if (context.quality === "diminished" && context.seventh === 10) return `${context.root}m7b5`;
+        return seventhLabelFromContext(context);
+      }
+      if (color === "dim7") {
+        if (context.quality === "diminished" && context.seventh === 9) return `${context.root}dim7`;
+        if (context.quality === "diminished" && context.seventh === 10) return `${context.root}m7b5`;
+        return seventhLabelFromContext(context);
+      }
+      if (color === "6") {
+        if (context.quality === "major" && context.sixth === 9) return `${context.root}6`;
+        if (context.quality === "minor" && context.sixth === 9) return `${context.root}m6`;
+        return triad;
+      }
+      if (color === "add9") return addNineLabel(triad, context);
+      if (color === "sus2") {
+        if (context.second === 2 && context.fifth === 7) return `${context.root}sus2`;
+        return addNineLabel(triad, context);
+      }
+      if (color === "sus4") {
+        if (context.fourth === 5 && context.fifth === 7) return `${context.root}sus4`;
+        return triad;
+      }
+      if (color === "m7sus2") {
+        if (context.second === 2 && context.seventh === 10 && context.quality === "minor") return `${context.root}m7sus2`;
+        if (context.second === 2 && context.seventh === 10 && context.quality === "major") return `${context.root}7sus2`;
+        return addNineLabel(seventhLabelFromContext(context), context);
+      }
+      if (color === "7sus4") {
+        if (context.fourth === 5 && context.fifth === 7 && context.seventh === 10) return `${context.root}7sus4`;
+        if (context.fourth === 5 && context.fifth === 7) return `${context.root}sus4`;
+        return seventhLabelFromContext(context);
+      }
+      return triad;
+    }
+
+    function uniqueSorted(values) {
+      return [...new Set(values)].sort((a, b) => a - b);
+    }
+
+    function chordRelativeIntervals(context, color = "triad") {
+      const tones = context.tones;
+      const triad = [tones.root, tones.third, tones.fifth];
+
+      if (["maj7", "m7", "7", "blues7", "m7b5", "dim7"].includes(color)) {
+        return uniqueSorted([...triad, tones.seventh]);
+      }
+      if (["maj9", "m9", "9"].includes(color)) {
+        return uniqueSorted([...triad, tones.seventh, tones.ninth]);
+      }
+      if (color === "6") return uniqueSorted([...triad, tones.sixth]);
+      if (color === "add9") return uniqueSorted([...triad, tones.ninth]);
+      if (color === "sus2") return uniqueSorted([tones.root, tones.second, tones.fifth]);
+      if (color === "sus4") return uniqueSorted([tones.root, tones.fourth, tones.fifth]);
+      if (color === "m7sus2") return uniqueSorted([tones.root, tones.second, tones.fifth, tones.seventh]);
+      if (color === "7sus4") return uniqueSorted([tones.root, tones.fourth, tones.fifth, tones.seventh]);
+
+      return uniqueSorted(triad);
+    }
+
+    function progressionChordMidis(item, chord) {
+      const context = chordToneContext(item, chord.degree);
+      if (!context) return [];
+
+      let chordRootMidi = 48 + midiByName[state.root] + context.rootInterval;
+      while (chordRootMidi > 59) chordRootMidi -= 12;
+      while (chordRootMidi < 43) chordRootMidi += 12;
+
+      const upperNotes = chordRelativeIntervals(context, chord.color).map(interval => chordRootMidi + interval);
+      const bass = chordRootMidi - 12 >= 36 ? chordRootMidi - 12 : chordRootMidi;
+      return uniqueSorted([bass, ...upperNotes]).filter(midi => midi >= 21 && midi <= 108);
+    }
+
+    function hashString(text) {
+      let hash = 2166136261;
+      for (let index = 0; index < text.length; index++) {
+        hash ^= text.charCodeAt(index);
+        hash = Math.imul(hash, 16777619);
+      }
+      return hash >>> 0;
+    }
+
+    function chooseFrom(list, salt) {
+      if (!list.length) return undefined;
+      return list[hashString([state.root, state.item, state.progressionStyle, state.progressionSeed, salt].join("|")) % list.length];
+    }
+
+    function selectedOption(options, id) {
+      return options.find(option => option.id === id) || options[0];
+    }
+
+    function progressionContext(item) {
+      return [state.root, item.name, state.progressionStyle, state.progressionSeed].join("|");
+    }
+
+    function normalizeProgressionDegree(degree, item) {
+      const count = item.intervals.filter(interval => interval < 12).length;
+      const functionalDegree = ((degree % 7) + 7) % 7;
+      const compactScaleMap = {
+        5: [0, 1, 1, 2, 3, 4, 4],
+        6: [0, 1, 2, 3, 4, 5, 5],
+        12: [0, 2, 4, 5, 7, 9, 11]
+      };
+      if (count === 7) return functionalDegree;
+      if (compactScaleMap[count]) return compactScaleMap[count][functionalDegree];
+      return ((degree % count) + count) % count;
+    }
+
+    function combinedPool(styleValues, moodValues, mood) {
+      const moodWeight = mood.tension > 0.55 ? 2 : 1;
+      return [
+        ...styleValues,
+        ...moodValues,
+        ...(moodWeight > 1 ? moodValues : styleValues)
+      ];
+    }
+
+    function cleanProgressionRepeats(degrees, style, mood) {
+      const repeatFriendly = ["ambientPiano", "minimalistPiano", "newAgePiano"].includes(state.progressionStyle)
+        || ["floating", "ethereal", "liminal"].includes(state.progressionMood);
+      if (repeatFriendly) return degrees;
+
+      for (let index = 1; index < degrees.length; index++) {
+        if (degrees[index] === degrees[index - 1]) {
+          const alternatives = combinedPool(style.colors, mood.colors, mood).filter(degree => degree !== degrees[index - 1]);
+          degrees[index] = chooseFrom(alternatives.length ? alternatives : style.colors, `repeat-${degrees.length}-${index}`);
+        }
+      }
+      return degrees;
+    }
+
+    function generateProgressionDegrees(item, length) {
+      const style = styleProfiles[state.progressionStyle] || styleProfiles.pop;
+      const basePattern = chooseFrom(style.patterns[length] || styleProfiles.pop.patterns[length], `pattern-${length}`);
+      return [...basePattern].map(degree => normalizeProgressionDegree(degree, item));
+    }
+
+    function chordColorCandidatesForContext(context, degree, item) {
+      if (context.quality === "diminished") return ["m7b5", "dim7", "m7", "triad"];
+      if (context.quality === "minor") return ["m7", "m9", "m7sus2", "add9", "sus2", "sus4", "6", "triad"];
+      if (context.quality === "major" && normalizeProgressionDegree(degree, item) === 4) {
+        return ["7", "7sus4", "sus4", "add9", "6", "triad"];
+      }
+      if (context.quality === "major") return ["maj7", "maj9", "6", "add9", "sus2", "sus4", "triad"];
+      return ["triad", "add9", "sus2", "sus4"];
+    }
+
+    function progressionChordColor(item, degree, index, length) {
+      const context = chordToneContext(item, degree);
+      if (!context) return "triad";
+      const styleColors = styleChordColors[state.progressionStyle] || styleChordColors.pop;
+      const functionalDegree = normalizeProgressionDegree(degree, item);
+
+      if (state.progressionStyle === "pop") return "triad";
+
+      if (state.progressionStyle === "classical") {
+        if (functionalDegree === 4) return "7";
+        if (context.quality === "diminished") return chooseFrom(["triad", "dim7"], `classical-dim-${length}-${index}`);
+        return "triad";
+      }
+
+      if (state.progressionStyle === "blues") {
+        if ([0, 3, 4].includes(functionalDegree)) return "blues7";
+        if (context.quality === "minor") return "m7";
+        return "triad";
+      }
+
+      if (state.progressionStyle === "jazz") {
+        if (context.quality === "diminished") return chooseFrom(["m7b5", "dim7"], `jazz-dim-${length}-${index}`);
+        if (functionalDegree === 4) return chooseFrom(["7", "7sus4", "9"], `jazz-dom-${length}-${index}`);
+        if (context.quality === "major") return chooseFrom(["maj7", "maj9", "add9"], `jazz-maj-${length}-${index}`);
+        if (context.quality === "minor") return chooseFrom(["m7", "m9", "m7sus2", "sus2", "add9"], `jazz-min-${length}-${index}`);
+      }
+
+      const fitting = chordColorCandidatesForContext(context, degree, item);
+      const pool = styleColors.filter(color => fitting.includes(color));
+      if (index === length - 1 && functionalDegree === 0 && fitting.includes("maj7")) {
+        const homePool = pool.filter(color => ["maj7", "maj9", "add9", "6", "triad"].includes(color));
+        return chooseFrom(homePool.length ? homePool : fitting, `home-${length}-${index}`);
+      }
+      if (functionalDegree === 4 && fitting.includes("7")) {
+        const dominantPool = pool.filter(color => ["7", "7sus4", "sus4", "add9"].includes(color));
+        if (dominantPool.length) return chooseFrom(dominantPool, `dominant-${length}-${index}`);
+      }
+      return chooseFrom(pool.length ? pool : fitting, `chord-color-${length}-${index}`);
+    }
+
+    function generateScaleProgressionCards(item) {
+      return [4, 5, 6].map(length => {
+        const degrees = generateProgressionDegrees(item, length);
+        const chordData = degrees.map((degree, index) => {
+          const color = progressionChordColor(item, degree, index, length);
+          return {
+            degree,
+            color,
+            label: coloredChordLabel(item, degree, color)
+          };
+        });
+        const progressionCopy = simpleProgressionCopy(chordData.map(chord => chord.label).join(" - "));
+        return [
+          `${length} chords`,
+          progressionCopy,
+          chordData
+        ];
+      });
+    }
+
+    function scaleProgressionCards(item) {
+      const context = progressionContext(item);
+      if (!state.progressionSet || state.progressionSet.context !== context) {
+        state.progressionSet = {
+          context,
+          cards: generateScaleProgressionCards(item)
+        };
+      }
+      return state.progressionSet.cards;
+    }
+
+    function progressionPicker(kind, options, value) {
+      const selected = selectedOption(options, value);
+      return `
+        <div class="progression-picker" data-picker="${kind}">
+          <button class="progression-picker-toggle" type="button" aria-expanded="false">
+            <span>Style: ${selected.label}</span>
+            <span aria-hidden="true">↑</span>
+          </button>
+          <div class="progression-menu" hidden>
+            ${options.map(option => `
+              <button
+                class="progression-option ${option.id === value ? "active" : ""}"
+                type="button"
+                data-kind="${kind}"
+                data-value="${option.id}"
+              >${option.label}</button>
+            `).join("")}
+          </div>
+        </div>
+      `;
+    }
+
+    function progressionControls() {
+      return `
+        <div class="progression-controls">
+          <button class="progression-action" type="button" id="generateProgressions">
+            Generate chord progression
+          </button>
+          ${progressionPicker("style", progressionStyles, state.progressionStyle)}
+        </div>
+      `;
+    }
+
+    function bindProgressionControls(item) {
+      const generateButton = document.getElementById("generateProgressions");
+      if (generateButton) {
+        generateButton.addEventListener("click", () => {
+          state.progressionSeed += 1;
+          state.progressionSet = {
+            context: progressionContext(item),
+            cards: generateScaleProgressionCards(item)
+          };
+          render();
+        });
+      }
+
+      practice.querySelectorAll(".progression-picker-toggle").forEach(button => {
+        button.addEventListener("click", () => {
+          const picker = button.closest(".progression-picker");
+          const menu = picker.querySelector(".progression-menu");
+          const shouldOpen = menu.hidden;
+          practice.querySelectorAll(".progression-menu").forEach(openMenu => {
+            openMenu.hidden = true;
+            openMenu.previousElementSibling.setAttribute("aria-expanded", "false");
+          });
+          menu.hidden = !shouldOpen;
+          button.setAttribute("aria-expanded", String(shouldOpen));
+        });
+      });
+
+      practice.querySelectorAll(".progression-option").forEach(button => {
+        button.addEventListener("click", () => {
+          state.progressionStyle = button.dataset.value;
+          state.progressionSeed = 0;
+          state.progressionSet = null;
+          render();
+        });
+      });
+
+      practice.querySelectorAll(".progression-play").forEach(button => {
+        button.addEventListener("click", () => {
+          playScaleProgression(item, Number(button.dataset.progressionIndex));
+        });
+      });
+
+      practice.querySelectorAll(".progression-favorite").forEach(button => {
+        button.addEventListener("click", () => {
+          toggleProgressionFavorite(item, Number(button.dataset.progressionIndex));
+        });
+      });
+    }
+
+    function renderRoots() {
+      rootGrid.innerHTML = "";
+      roots.forEach(root => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.textContent = root;
+        button.className = root === state.root ? "active" : "";
+        button.addEventListener("click", () => {
+          state.root = root;
+          state.progressionSeed = 0;
+          state.progressionSet = null;
+          render();
+        });
+        rootGrid.appendChild(button);
+      });
+    }
+
+    function renderLibrary() {
+      library.innerHTML = "";
+      libraryLabelText.textContent = state.mode === "circle"
+        ? "Circle Keys"
+        : state.mode === "scales"
+        ? "Scale Library"
+        : state.mode === "arpeggios"
+          ? "Arpeggio Library"
+          : "Chord Library";
+      currentCollection().forEach(item => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = (state.mode === "circle" ? item.name === state.root : item.name === state.item) ? "active" : "";
+        button.innerHTML = `<span>${item.name}</span>`;
+        button.addEventListener("click", () => {
+          if (state.mode === "circle") {
+            state.root = item.name;
+          } else {
+            state.item = item.name;
+          }
+          state.inversion = 0;
+          state.progressionSeed = 0;
+          state.progressionSet = null;
+          render();
+        });
+        library.appendChild(button);
+      });
+    }
+
+    function currentCircleKey() {
+      return circleKeys.find(item => item.key === state.root) || circleKeys[0];
+    }
+
+    function renderCircleView() {
+      const selected = currentCircleKey();
+      notesEl.className = "notes";
+      notesEl.innerHTML = `
+        <div class="circle-view">
+          <div class="circle-ring"></div>
+          <div class="circle-center">
+            <strong>${selected.key}</strong>
+            <small>${selected.minor}</small>
+          </div>
+          ${circleKeys.map(item => `
+            <button
+              type="button"
+              class="circle-node ${item.key === state.root ? "active" : ""}"
+              data-key="${item.key}"
+              style="--angle: ${item.angle}deg"
+            >
+              ${item.key}
+              <small>${item.minor}</small>
+            </button>
+          `).join("")}
+        </div>
+      `;
+      notesEl.querySelectorAll(".circle-node").forEach(button => {
+        button.addEventListener("click", () => {
+          state.root = button.dataset.key;
+          state.progressionSeed = 0;
+          state.progressionSet = null;
+          render();
+        });
+      });
+      formulaEl.innerHTML = "";
+      noteCount.textContent = selected.signature;
+    }
+
+    function renderDetails(item, notes) {
+      if (state.mode === "circle") {
+        const selected = currentCircleKey();
+        const index = circleKeys.findIndex(entry => entry.key === selected.key);
+        const clockwise = circleKeys[(index + 1) % circleKeys.length];
+        const counter = circleKeys[(index + circleKeys.length - 1) % circleKeys.length];
+        const major = scales[0];
+        const majorNotes = major.intervals.map((interval, noteIndex) => {
+          return spellNoteFromFormula(state.root, major.formula[noteIndex], interval);
+        }).join("  ");
+        detailsEl.innerHTML = [
+          ["Major Key", selected.key],
+          ["Relative Minor", selected.minor],
+          ["Key Signature", selected.signature],
+          ["Accidentals", selected.accidentals],
+          ["Clockwise", `${clockwise.key} / ${clockwise.minor}`],
+          ["Counter-clockwise", `${counter.key} / ${counter.minor}`],
+          ["Major Scale", majorNotes]
+        ].map(([label, value]) => `
+          <div class="detail-row">
+            <strong>${label}</strong>
+            <span>${value}</span>
+          </div>
+        `).join("");
+        return;
+      }
+
+      const rows = [
+        ["Info", item.short || modeLabel(state.mode)],
+        ["Formula", item.formula.join("  ")],
+        ["Notes", notes.join("  ")],
+        ["Intervals", patternIntervals(item).map(interval => `${interval} st`).join("  ")],
+        ["Steps", item.steps || "Stacked chord tones"]
+      ];
+      rows.push(["RH Fingers", fingeringForPattern(item, "RH").join("  ")]);
+      rows.push(["LH Fingers", fingeringForPattern(item, "LH").join("  ")]);
+      detailsEl.innerHTML = rows.map(([label, value]) => `
+        <div class="detail-row">
+          <strong>${label}</strong>
+          <span>${value}</span>
+        </div>
+      `).join("");
+    }
+
+    function renderNotes(item, notes) {
+      if (state.mode === "circle") {
+        renderCircleView();
+        return;
+      }
+
+      const rightFingers = fingeringForPattern(item, "RH");
+      const leftFingers = fingeringForPattern(item, "LH");
+      const noteMidis = patternIntervals(item).map(interval => patternRootMidi() + interval);
+      notesEl.className = state.mode === "scales"
+        ? "notes scale-grid"
+        : state.mode === "arpeggios"
+          ? "notes arp-grid"
+          : "notes";
+      const formula = state.mode === "scales"
+        ? state.scaleTwoOctaves
+          ? Array.from({ length: notes.length }, (_, index) => String(index + 1))
+          : [...item.formula, "8"]
+        : state.mode === "arpeggios"
+          ? fingeringForPattern(item, "RH").map((finger, index) => `RH ${finger} / LH ${fingeringForPattern(item, "LH")[index]}`)
+          : chordInversionFormula(item);
+      notesEl.innerHTML = notes.map((note, index) => {
+        const rightFinger = rightFingers[index] ? `<small>RH ${rightFingers[index]}</small>` : "";
+        const leftFinger = leftFingers[index] ? `<small>LH ${leftFingers[index]}</small>` : "";
+        return `
+          <button class="note-cell" type="button" data-midi="${noteMidis[index]}" aria-label="Play ${note}">
+            <div class="note-pill">${note}${rightFinger}${leftFinger}</div>
+            <div class="note-index">${formula[index] || ""}</div>
+          </button>
+        `;
+      }).join("");
+      notesEl.querySelectorAll(".note-cell").forEach(button => {
+        button.addEventListener("click", () => {
+          playNoteCell(Number(button.dataset.midi), button);
+        });
+      });
+      formulaEl.innerHTML = "";
+      noteCount.textContent = `${notes.length} note${notes.length === 1 ? "" : "s"}`;
+    }
+
+    function renderInversions(item) {
+      if (state.mode !== "chords") {
+        inversionsEl.className = "inversions";
+        inversionsEl.innerHTML = "";
+        return;
+      }
+
+      const options = [
+        ["Root position", 0],
+        ["1st inversion", 1],
+        ["2nd inversion", 2]
+      ].filter(([, inversion]) => inversion < item.intervals.length);
+
+      inversionsEl.className = "inversions show";
+      inversionsEl.innerHTML = options.map(([label, inversion]) => `
+        <button type="button" class="${state.inversion === inversion ? "active" : ""}" data-inversion="${inversion}">
+          ${label}
+        </button>
+      `).join("");
+
+      inversionsEl.querySelectorAll("button").forEach(button => {
+        button.addEventListener("click", () => {
+          state.inversion = Number(button.dataset.inversion);
+          render();
+        });
+      });
+    }
+
+    function renderScaleOptions() {
+      if (state.mode !== "scales") {
+        scaleOptionsEl.className = "scale-options";
+        scaleOptionsEl.innerHTML = "";
+        return;
+      }
+
+      scaleOptionsEl.className = "scale-options show";
+      scaleOptionsEl.innerHTML = `
+        <button type="button" class="${state.scaleTwoOctaves ? "active" : ""}" id="twoOctaveScale">
+          ${state.scaleTwoOctaves ? "Scale over 1 octave" : "Scale over 2 octaves"}
+        </button>
+      `;
+
+      document.getElementById("twoOctaveScale").addEventListener("click", () => {
+        state.scaleTwoOctaves = !state.scaleTwoOctaves;
+        render();
+      });
+    }
+
+    function renderPractice(item) {
+      practiceTitle.textContent = state.mode === "scales" ? "Chord progressions" : "Practice";
+      const cards = state.mode === "circle"
+        ? circlePracticeCards()
+        : state.mode === "scales"
+        ? scaleProgressionCards(item)
+        : state.mode === "arpeggios"
+          ? [
+              ["Two octaves", `Play ${state.root} ${item.name} as an arpeggio from the lower root to the top root.`],
+              ["Fingering", `RH ${arpeggioFingering(item).join("-")} / LH ${arpeggioLeftFingering(item).join("-")}.`],
+              ["Even motion", "Keep the wrist loose and let the thumb pass under smoothly after the first octave."]
+            ]
+        : [
+            ["Blocked chord", `Play all notes of ${state.root} ${item.name} together, then release cleanly.`],
+            ["Broken chord", "Play the notes one at a time from low to high and back down."],
+            ["Invert it", "Move the bottom note to the top and listen to how the same chord changes shape."]
+          ];
+      practice.innerHTML = cards.map(([title, copy], index) => {
+        const progressionClass = state.mode === "scales" ? " progression-card" : "";
+        const cardTitle = state.mode === "scales" ? `${title}:` : title;
+        const cardCopy = state.mode === "scales" ? simpleProgressionCopy(copy) : copy;
+        const progressionActions = state.mode === "scales"
+          ? `
+            <div class="progression-actions">
+              <button class="progression-play" type="button" data-progression-index="${index}" aria-label="Play ${title} progression">▶ Play</button>
+              <button
+                class="progression-favorite ${isProgressionFavorite(item, cards[index]) ? "favorite-on" : ""}"
+                type="button"
+                data-progression-index="${index}"
+                aria-label="${isProgressionFavorite(item, cards[index]) ? "Remove" : "Save"} ${title} progression"
+              >${isProgressionFavorite(item, cards[index]) ? "★" : "☆"}</button>
+            </div>
+          `
+          : "";
+        return `
+          <div class="practice-card${progressionClass}">
+            <h4>${cardTitle}</h4>
+            <p>${cardCopy}</p>
+            ${progressionActions}
+          </div>
+        `;
+      }).join("") + (state.mode === "scales" ? progressionControls() : "");
+      if (state.mode === "scales") bindProgressionControls(item);
+    }
+
+    function circlePracticeCards() {
+      const scale = scales[0];
+      const majorDiatonic = [0, 1, 2, 3, 4, 5, 6].map(degree => chordFromScaleDegree(scale, degree));
+      const progressionOne = [0, 4, 5, 3].map(degree => chordFromScaleDegree(scale, degree)).join(" - ");
+      const progressionTwo = [1, 4, 0].map(degree => chordFromScaleDegree(scale, degree)).join(" - ");
+      return [
+        ["Diatonic chords", majorDiatonic.join(" - ")],
+        ["I-V-vi-IV", progressionOne],
+        ["ii-V-I", progressionTwo]
+      ];
+    }
+
+    function displayTitle() {
+      if (state.mode === "circle") {
+        const selected = currentCircleKey();
+        return `${selected.key} major ↔ ${selected.minor.replace("m", " minor")}`;
+      }
+      const suffix = {
+        scales: "scale",
+        chords: "chord",
+        arpeggios: "arpeggio"
+      }[state.mode] || "";
+      return `${state.root} ${currentItem().name.toLowerCase()}${suffix ? ` ${suffix}` : ""}`;
+    }
+
+    function animateKeyPress(key, hold = 180) {
+      if (!key) return;
+      key.classList.remove("pressed");
+      void key.offsetWidth;
+      window.cancelAnimationFrame(key.pressFrame);
+      window.clearTimeout(key.pressTimer);
+      key.pressFrame = window.requestAnimationFrame(() => {
+        key.classList.add("pressed");
+        key.pressTimer = window.setTimeout(() => {
+          key.classList.remove("pressed");
+        }, hold);
+      });
+    }
+
+    function visibleKeyForMidi(midi) {
+      return keyboard.querySelector(`.key[data-midi="${midi}"]`);
+    }
+
+    function animateMidiPress(midi, delay = 0, hold = 240) {
+      const key = visibleKeyForMidi(midi);
+      if (!key) return;
+      const msDelay = Math.max(0, delay) * 1000;
+      window.setTimeout(() => {
+        animateKeyPress(key, hold);
+      }, msDelay);
+    }
+
+    function animateMidiChord(midis, delay = 0, hold = 560) {
+      [...new Set(midis)].forEach(midi => animateMidiPress(midi, delay, hold));
+    }
+
+    function playNoteCell(midi, sourceElement) {
+      if (!Number.isFinite(midi)) return;
+      animateKeyPress(sourceElement, 210);
+      animateMidiPress(midi, 0, 240);
+      playMidi(midi, 1.7, 0);
+    }
+
+    function playScaleChordDegree(item, degree, sourceElement) {
+      const chord = scaleChordInfo(item, degree);
+      if (!chord.midis.length) return;
+      animateKeyPress(sourceElement, 260);
+      animateMidiChord(chord.midis, 0, 620);
+      chord.midis.forEach(midi => playMidi(midi, 2.35, 0));
+    }
+
+    function renderKeyboard(item) {
+      if (state.mode === "circle") {
+        item = scales[0];
+      }
+      keyboard.innerHTML = "";
+      const rootPitch = midiByName[state.root];
+      const rootMidi = patternRootMidi();
+      const activeMidis = new Set(patternIntervals(item).map(interval => rootMidi + interval));
+      const whiteNotes = ["C", "D", "E", "F", "G", "A", "B"];
+      const blackAfter = { C: "C#", D: "D#", F: "F#", G: "G#", A: "A#" };
+      const whiteSlots = [];
+
+      for (let octave = 3; octave <= 5; octave++) {
+        whiteNotes.forEach(note => whiteSlots.push({ note, octave, pitch: midiByName[note] }));
+      }
+
+      whiteSlots.forEach((slot, index) => {
+        const key = document.createElement("button");
+        const midi = 12 * (slot.octave + 1) + slot.pitch;
+        const inPattern = activeMidis.has(midi);
+        const isRoot = inPattern && midi === rootMidi;
+        key.type = "button";
+        key.className = `key white${inPattern ? " in-pattern" : ""}${isRoot ? " root" : ""}`;
+        key.dataset.midi = String(midi);
+        key.innerHTML = `<span class="key-label">${slot.note}</span>`;
+        key.addEventListener("click", () => {
+          animateKeyPress(key);
+          playMidi(midi);
+        });
+        keyboard.appendChild(key);
+
+        const black = blackAfter[slot.note];
+        if (black && index < whiteSlots.length - 1) {
+          const pitch = midiByName[black];
+          const blackMidi = 12 * (slot.octave + 1) + pitch;
+          const blackKey = document.createElement("button");
+          const blackInPattern = activeMidis.has(blackMidi);
+          const blackIsRoot = blackInPattern && blackMidi === rootMidi;
+          blackKey.type = "button";
+          blackKey.className = `key black${blackInPattern ? " in-pattern" : ""}${blackIsRoot ? " root" : ""}`;
+          blackKey.dataset.midi = String(blackMidi);
+          blackKey.style.left = `${((index + 1) / whiteSlots.length) * 100 - 1.25}%`;
+          blackKey.innerHTML = `
+            <span class="key-label">
+              <span class="flat-name">${chromaticFlat[pitch]}</span>
+              <span>${chromaticSharp[pitch]}</span>
+            </span>
+          `;
+          blackKey.addEventListener("click", () => {
+            animateKeyPress(blackKey);
+            playMidi(blackMidi);
+          });
+          keyboard.appendChild(blackKey);
+        }
+      });
+    }
+
+    let audioContext;
+    let pianoOutput;
+    let progressionReverbInput;
+    const sampleBaseUrl = "https://tonejs.github.io/audio/salamander/";
+    const pianoSamples = [
+      [21, "A0.mp3"], [24, "C1.mp3"], [27, "Ds1.mp3"], [30, "Fs1.mp3"],
+      [33, "A1.mp3"], [36, "C2.mp3"], [39, "Ds2.mp3"], [42, "Fs2.mp3"],
+      [45, "A2.mp3"], [48, "C3.mp3"], [51, "Ds3.mp3"], [54, "Fs3.mp3"],
+      [57, "A3.mp3"], [60, "C4.mp3"], [63, "Ds4.mp3"], [66, "Fs4.mp3"],
+      [69, "A4.mp3"], [72, "C5.mp3"], [75, "Ds5.mp3"], [78, "Fs5.mp3"],
+      [81, "A5.mp3"], [84, "C6.mp3"], [87, "Ds6.mp3"], [90, "Fs6.mp3"],
+      [93, "A6.mp3"], [96, "C7.mp3"], [99, "Ds7.mp3"], [102, "Fs7.mp3"],
+      [105, "A7.mp3"], [108, "C8.mp3"]
+    ];
+    const sampleCache = new Map();
+
+    function createReverbImpulse(seconds = 3.4, decay = 3.2) {
+      const length = Math.floor(audioContext.sampleRate * seconds);
+      const impulse = audioContext.createBuffer(2, length, audioContext.sampleRate);
+      for (let channel = 0; channel < impulse.numberOfChannels; channel++) {
+        const data = impulse.getChannelData(channel);
+        for (let index = 0; index < length; index++) {
+          const fade = Math.pow(1 - index / length, decay);
+          data[index] = (Math.random() * 2 - 1) * fade;
+        }
+      }
+      return impulse;
+    }
+
+    function ensureProgressionReverb() {
+      audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)();
+      if (progressionReverbInput) return progressionReverbInput;
+
+      const convolver = audioContext.createConvolver();
+      const damping = audioContext.createBiquadFilter();
+      const wet = audioContext.createGain();
+
+      convolver.buffer = createReverbImpulse();
+      damping.type = "lowpass";
+      damping.frequency.value = 3600;
+      wet.gain.value = 0.34;
+
+      convolver.connect(damping).connect(wet).connect(audioContext.destination);
+      progressionReverbInput = convolver;
+      return progressionReverbInput;
+    }
+
+    function ensurePianoOutput() {
+      audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)();
+      if (pianoOutput) return pianoOutput;
+
+      const tone = audioContext.createBiquadFilter();
+      const body = audioContext.createBiquadFilter();
+      const compressor = audioContext.createDynamicsCompressor();
+      const master = audioContext.createGain();
+
+      tone.type = "lowpass";
+      tone.frequency.value = 5200;
+      tone.Q.value = 0.7;
+
+      body.type = "peaking";
+      body.frequency.value = 190;
+      body.Q.value = 0.85;
+      body.gain.value = 3.4;
+
+      compressor.threshold.value = -18;
+      compressor.knee.value = 16;
+      compressor.ratio.value = 3;
+      compressor.attack.value = 0.006;
+      compressor.release.value = 0.16;
+
+      master.gain.value = 0.82;
+      tone.connect(body).connect(compressor).connect(master).connect(audioContext.destination);
+      pianoOutput = tone;
+      return pianoOutput;
+    }
+
+    function makeHammerNoise(start, duration, frequency) {
+      const length = Math.max(1, Math.floor(audioContext.sampleRate * duration));
+      const buffer = audioContext.createBuffer(1, length, audioContext.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < length; i++) {
+        data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, 2);
+      }
+
+      const source = audioContext.createBufferSource();
+      const filter = audioContext.createBiquadFilter();
+      const gain = audioContext.createGain();
+
+      filter.type = "bandpass";
+      filter.frequency.setValueAtTime(Math.min(6200, frequency * 5.2), start);
+      filter.Q.value = 1.5;
+      gain.gain.setValueAtTime(0.045, start);
+      gain.gain.exponentialRampToValueAtTime(0.001, start + duration);
+
+      source.buffer = buffer;
+      source.connect(filter).connect(gain).connect(ensurePianoOutput());
+      source.start(start);
+      source.stop(start + duration);
+    }
+
+    function playFallbackMidi(midi, duration = 1.15, delay = 0, options = {}) {
+      const output = ensurePianoOutput();
+      const reverb = options.reverb ? ensureProgressionReverb() : null;
+      const start = audioContext.currentTime + delay;
+      const frequency = 440 * Math.pow(2, (midi - 69) / 12);
+      const level = (options.gain ?? 1) * Math.max(0.08, 0.21 - Math.max(0, midi - 60) * 0.003);
+      const partials = [
+        { ratio: 1, gain: 1, detune: -2, type: "triangle", decay: 1 },
+        { ratio: 1.002, gain: 0.72, detune: 3, type: "sine", decay: 0.92 },
+        { ratio: 2.01, gain: 0.28, detune: -4, type: "sine", decay: 0.55 },
+        { ratio: 3.01, gain: 0.12, detune: 2, type: "sine", decay: 0.34 }
+      ];
+
+      makeHammerNoise(start, 0.035, frequency);
+
+      partials.forEach(partial => {
+        const oscillator = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        const stop = start + duration * partial.decay + 0.18;
+
+        oscillator.type = partial.type;
+        oscillator.frequency.setValueAtTime(frequency * partial.ratio, start);
+        oscillator.detune.setValueAtTime(partial.detune, start);
+
+        gain.gain.setValueAtTime(0.0001, start);
+        gain.gain.linearRampToValueAtTime(level * partial.gain, start + 0.008);
+        gain.gain.exponentialRampToValueAtTime(level * partial.gain * 0.42, start + 0.08);
+        gain.gain.exponentialRampToValueAtTime(0.001, stop);
+
+        oscillator.connect(gain);
+        gain.connect(output);
+        if (reverb) gain.connect(reverb);
+        oscillator.start(start);
+        oscillator.stop(stop + 0.04);
+      });
+    }
+
+    function nearestSample(midi) {
+      return pianoSamples.reduce((closest, sample) => {
+        return Math.abs(sample[0] - midi) < Math.abs(closest[0] - midi) ? sample : closest;
+      }, pianoSamples[0]);
+    }
+
+    async function loadSample(sampleMidi, fileName) {
+      if (!sampleCache.has(fileName)) {
+        sampleCache.set(fileName, fetch(sampleBaseUrl + fileName)
+          .then(response => {
+            if (!response.ok) throw new Error("Piano sample failed to load");
+            return response.arrayBuffer();
+          })
+          .then(buffer => {
+            audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)();
+            return audioContext.decodeAudioData(buffer);
+          }));
+      }
+      return sampleCache.get(fileName);
+    }
+
+    async function playSampledPiano(midi, duration = 1.7, delay = 0, options = {}) {
+      audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)();
+      if (audioContext.state === "suspended") await audioContext.resume();
+
+      const [sampleMidi, fileName] = nearestSample(midi);
+      const buffer = await loadSample(sampleMidi, fileName);
+      const start = audioContext.currentTime + delay;
+      const source = audioContext.createBufferSource();
+      const gain = audioContext.createGain();
+      const filter = audioContext.createBiquadFilter();
+
+      source.buffer = buffer;
+      source.playbackRate.value = Math.pow(2, (midi - sampleMidi) / 12);
+
+      filter.type = "lowpass";
+      filter.frequency.value = 6800;
+      filter.Q.value = 0.4;
+
+      gain.gain.setValueAtTime(0.0001, start);
+      gain.gain.linearRampToValueAtTime(options.gain ?? 0.72, start + 0.012);
+      gain.gain.exponentialRampToValueAtTime(0.001, start + duration);
+
+      source.connect(filter).connect(gain);
+      gain.connect(audioContext.destination);
+      if (options.reverb) gain.connect(ensureProgressionReverb());
+      source.start(start);
+      source.stop(start + duration + 0.08);
+    }
+
+    function playMidi(midi, duration = 1.7, delay = 0) {
+      playSampledPiano(midi, duration, delay).catch(() => {
+        playFallbackMidi(midi, duration, delay);
+      });
+    }
+
+    function playProgressionMidi(midi, duration = 3.8, delay = 0, gain = 0.5) {
+      playSampledPiano(midi, duration, delay, { gain, reverb: true }).catch(() => {
+        playFallbackMidi(midi, duration, delay, { gain: 0.9, reverb: true });
+      });
+    }
+
+    async function warmPianoSamples(midis) {
+      audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)();
+      if (audioContext.state === "suspended") await audioContext.resume();
+      const samples = new Map(midis.map(midi => {
+        const [sampleMidi, fileName] = nearestSample(midi);
+        return [fileName, [sampleMidi, fileName]];
+      }));
+      await Promise.all([...samples.values()].map(([sampleMidi, fileName]) => loadSample(sampleMidi, fileName)));
+    }
+
+    async function playScaleProgression(item, progressionIndex) {
+      const card = scaleProgressionCards(item)[progressionIndex];
+      const chords = card?.[2] || [];
+      const chordMidis = chords.map(chord => progressionChordMidis(item, chord)).filter(midis => midis.length);
+      const allMidis = uniqueSorted(chordMidis.flat());
+
+      try {
+        await warmPianoSamples(allMidis);
+      } catch (error) {
+        console.warn("Using fallback piano sound", error);
+      }
+
+      chordMidis.forEach((midis, chordIndex) => {
+        const chordDelay = chordIndex * 2;
+        animateMidiChord(midis, chordDelay, 680);
+        midis.forEach((midi, noteIndex) => {
+          const isBass = noteIndex === 0;
+          playProgressionMidi(midi, isBass ? 4.4 : 3.8, chordDelay + noteIndex * 0.018, isBass ? 0.42 : 0.5);
+        });
+      });
+    }
+
+    async function playCurrent(pattern) {
+      const item = state.mode === "circle" ? scales[0] : currentItem();
+      const rootMidi = patternRootMidi();
+      const notes = (state.mode === "circle" ? [...item.intervals, 12] : patternIntervals(item)).map(interval => rootMidi + interval);
+      const sequence = pattern === "updown" ? [...notes, ...notes.slice(0, -1).reverse()] : notes;
+      try {
+        await warmPianoSamples(sequence);
+      } catch (error) {
+        console.warn("Using fallback piano sound", error);
+      }
+      if (state.mode === "chords" && pattern === "up") {
+        animateMidiChord(notes, 0, 620);
+        notes.forEach(midi => playMidi(midi, 3, 0));
+      } else {
+        const noteDuration = state.mode === "scales" ? 0.82 : state.mode === "arpeggios" ? 0.8 : 1.25;
+        const noteSpacing = state.mode === "scales" ? 0.28 : state.mode === "arpeggios" ? 0.26 : 0.32;
+        const pressHold = state.mode === "scales" ? 250 : state.mode === "arpeggios" ? 235 : 310;
+        sequence.forEach((midi, index) => {
+          const noteDelay = index * noteSpacing;
+          animateMidiPress(midi, noteDelay, pressHold);
+          playMidi(midi, noteDuration, noteDelay);
+        });
+      }
+    }
+
+    function setMode(mode) {
+      state.mode = mode;
+      state.item = "Major";
+      state.inversion = 0;
+      state.scaleTwoOctaves = false;
+      state.progressionSeed = 0;
+      state.progressionSet = null;
+      syncModeButtons();
+      render();
+    }
+
+    document.getElementById("scaleMode").addEventListener("click", () => {
+      setMode("scales");
+    });
+
+    document.getElementById("chordMode").addEventListener("click", () => {
+      setMode("chords");
+    });
+
+    document.getElementById("arpMode").addEventListener("click", () => {
+      setMode("arpeggios");
+    });
+
+    document.getElementById("circleMode").addEventListener("click", () => {
+      setMode("circle");
+    });
+
+    document.getElementById("playUp").addEventListener("click", () => playCurrent("up"));
+    document.getElementById("playArp").addEventListener("click", () => playCurrent("updown"));
+    themeToggle.addEventListener("click", () => {
+      const nextTheme = document.body.classList.contains("dark-mode") ? "light" : "dark";
+      applyTheme(nextTheme);
+      saveTheme(nextTheme);
+    });
+    fullscreenToggle.addEventListener("click", toggleFullscreen);
+    document.addEventListener("fullscreenchange", updateFullscreenToggle);
+
+    favoriteToggle.addEventListener("click", toggleCurrentFavorite);
+
+    helpToggle.addEventListener("click", () => {
+      aboutModal.hidden = false;
+      document.body.classList.add("modal-open");
+      closeAbout.focus();
+    });
+
+    closeAbout.addEventListener("click", () => {
+      aboutModal.hidden = true;
+      document.body.classList.remove("modal-open");
+      helpToggle.focus();
+    });
+
+    aboutModal.addEventListener("click", event => {
+      if (event.target !== aboutModal) return;
+      aboutModal.hidden = true;
+      document.body.classList.remove("modal-open");
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key !== "Escape" || aboutModal.hidden) return;
+      aboutModal.hidden = true;
+      document.body.classList.remove("modal-open");
+      helpToggle.focus();
+    });
+
+    function render() {
+      const item = currentItem();
+      const notes = notesFor(item);
+      modeKicker.textContent = {
+        scales: "Scales",
+        chords: "Chords",
+        arpeggios: "Arpeggios",
+        circle: "Circle of Fifths"
+      }[state.mode] || "Piano Atlas";
+      const title = displayTitle();
+      headline.textContent = title;
+      headline.classList.toggle("long-title", title.length > 18);
+      headline.classList.toggle("extra-long-title", title.length > 24);
+      description.textContent = state.mode === "circle"
+        ? `Explore ${state.root} major, its relative minor, neighboring keys, key signature, and common progressions.`
+        : state.mode === "arpeggios"
+        ? `A two-octave ${state.root} ${item.name} arpeggio built from the chord tones, ending on the top ${state.root}.`
+        : item.description;
+      renderRoots();
+      renderLibrary();
+      renderNotes(item, notes);
+      renderScaleOptions();
+      renderInversions(item);
+      renderDetails(item, notes);
+      renderKeyboard(item);
+      renderScaleChords(item);
+      renderPractice(item);
+      renderFavorites();
+      updateFavoriteToggle();
+    }
+
+    render();
+    window.setTimeout(() => document.body.classList.add("ready"), 6000);
+  </script>
+</body>
+</html>

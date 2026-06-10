@@ -1,0 +1,16 @@
+Piano Atlas End User License
+Version 1.0.0
+
+Copyright (c) 2026 Vulshy. All rights reserved.
+
+You may install and use Piano Atlas for personal use after purchasing or
+receiving an authorized copy.
+
+You may not resell, redistribute, share, sublicense, reverse engineer, or claim
+Piano Atlas as your own work without written permission from Vulshy.
+
+This app is provided as-is, without warranty of any kind. The creator is not
+liable for damages, data loss, or issues caused by use of the app.
+
+Saved user data, such as favorites and chord progressions, is stored locally on
+the user's Windows account.
