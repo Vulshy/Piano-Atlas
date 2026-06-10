@@ -25,7 +25,3 @@ In the Windows app, saved user data is stored through the WebView user data fold
 ## License
 
 See `LICENSE.txt`.
-
-## Suggested GitHub Upload
-
-Upload this whole folder as the repository contents. If you want a simple public preview, GitHub Pages can serve `index.html`.
