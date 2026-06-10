@@ -86,9 +86,3 @@ If favorites do not save:
 If Windows blocks the app:
    - The app is unsigned, so SmartScreen may warn you.
    - This is normal for small direct-download apps before code signing.
-
-
-NOTES FOR GUMROAD BUYERS
-No Node.js, npm, Python, developer tools, or command-line knowledge are required.
-The app does not use localhost or development mode. The launcher is a native
-Piano Atlas window, so the taskbar and shortcuts use the Piano Atlas logo.
